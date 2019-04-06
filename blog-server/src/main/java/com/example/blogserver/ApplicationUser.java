@@ -1,16 +1,13 @@
-package com.example.authserver;
+package com.example.blogserver;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class ApplicationUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     private long id;
 
     @NotNull
@@ -18,6 +15,9 @@ public class ApplicationUser {
 
     @NotNull
     private String password;
+
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
+    private List<Blog> blogs;
 
     public long getId() {
         return id;

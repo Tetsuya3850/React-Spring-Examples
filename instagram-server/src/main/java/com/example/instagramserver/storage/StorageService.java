@@ -1,4 +1,4 @@
-package com.example.instagramserver;
+package com.example.instagramserver.storage;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

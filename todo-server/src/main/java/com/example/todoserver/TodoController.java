@@ -2,30 +2,23 @@ package com.example.todoserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@RequestMapping("/todos")
 public class TodoController {
     @Autowired
     private TodoRepository todoRepository;
 
-    @GetMapping("/todos")
+    @GetMapping("/")
     List<Todo> all() {
         return todoRepository.findAll();
     }
 
-    @PostMapping("/todos")
+    @PostMapping("/")
     Todo newEmployee(@Valid @RequestBody Todo newTodo, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return null;
@@ -34,19 +27,19 @@ public class TodoController {
         return todoRepository.save(newTodo);
     }
 
-    @GetMapping("/todos/{id}")
+    @GetMapping("/{id}")
     Todo one(@PathVariable Long id) {
         return todoRepository.findById(id)
                 .orElseThrow(() -> new TodoNotFoundException(id));
     }
 
-    @PutMapping("/todos/{id}")
+    @PutMapping("/{id}")
     Todo replaceEmployee(@RequestBody Todo newTodo, @PathVariable Long id) {
 
         return todoRepository.findById(id)
-                .map(employee -> {
-                    employee.setText(newTodo.getText());
-                    return todoRepository.save(employee);
+                .map(todo -> {
+                    todo.setText(newTodo.getText());
+                    return todoRepository.save(todo);
                 })
                 .orElseGet(() -> {
                     newTodo.setId(id);
@@ -54,7 +47,7 @@ public class TodoController {
                 });
     }
 
-    @DeleteMapping("/todos/{id}")
+    @DeleteMapping("/{id}")
     void deleteTodo(@PathVariable Long id) {
         todoRepository.deleteById(id);
     }

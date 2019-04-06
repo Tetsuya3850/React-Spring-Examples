@@ -1,9 +1,7 @@
 package com.example.instagramserver;
 
-import java.nio.file.Paths;
-import java.util.stream.Stream;
-
-import org.hamcrest.Matchers;
+import com.example.instagramserver.storage.StorageFileNotFoundException;
+import com.example.instagramserver.storage.StorageService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -20,7 +18,6 @@ import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -34,23 +31,11 @@ public class FileUploadTests {
     private StorageService storageService;
 
     @Test
-    public void shouldListAllFiles() throws Exception {
-        given(this.storageService.loadAll())
-                .willReturn(Stream.of(Paths.get("first.txt"), Paths.get("second.txt")));
-
-        this.mvc.perform(get("/")).andExpect(status().isOk())
-                .andExpect(model().attribute("files",
-                        Matchers.contains("http://localhost/files/first.txt",
-                                "http://localhost/files/second.txt")));
-    }
-
-    @Test
     public void shouldSaveUploadedFile() throws Exception {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt",
                 "text/plain", "Spring Framework".getBytes());
         this.mvc.perform(fileUpload("/").file(multipartFile))
-                .andExpect(status().isFound())
-                .andExpect(header().string("Location", "/"));
+                .andExpect(status().isOk());
 
         then(this.storageService).should().store(multipartFile);
     }
