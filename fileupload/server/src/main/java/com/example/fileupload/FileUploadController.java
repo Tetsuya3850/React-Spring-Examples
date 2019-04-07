@@ -4,13 +4,12 @@ import com.example.fileupload.post.Post;
 import com.example.fileupload.post.PostRepository;
 import com.example.fileupload.storage.StorageFileNotFoundException;
 import com.example.fileupload.storage.StorageService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class FileUploadController {
     }
 
     @GetMapping("")
-    public List<Post> handleFileUpload() {
+    public List<Post> getPosts() {
         return postRepository.findAll();
     }
 
