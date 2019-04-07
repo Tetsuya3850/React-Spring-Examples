@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import * as api from "../api";
-import { saveToken } from "../tokenUtils";
 
 class Signup extends Component {
   state = {
@@ -8,7 +7,7 @@ class Signup extends Component {
     password: "",
     passwordConfirm: "",
     unMatchPwdErr: "",
-    signupError: {}
+    signupError: ""
   };
 
   handleInputChange = event => {
@@ -33,12 +32,8 @@ class Signup extends Component {
         await api.signup(payload);
         this.props.history.push("/signin");
       } catch (error) {
-        if (error.response) {
-          console.log(error);
-          console.log(error.response);
-          const { data } = error.response;
-          this.setState({ signupError: data });
-        }
+        console.log(error);
+        this.setState({ signupError: "Something Went Wrong!" });
       }
     }
   };
@@ -60,7 +55,6 @@ class Signup extends Component {
           <div>
             <label>Email Address</label>
             <span> * </span>
-            <span style={styles.error}>{signupError.email}</span>
           </div>
           <input
             name="email"
@@ -105,6 +99,7 @@ class Signup extends Component {
         </div>
 
         <input type="submit" value="Submit!" />
+        <p style={styles.error}>{signupError}</p>
       </form>
     );
   }

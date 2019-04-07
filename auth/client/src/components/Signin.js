@@ -6,7 +6,7 @@ class Signin extends Component {
   state = {
     email: "",
     password: "",
-    signinError: {}
+    signinError: ""
   };
 
   handleInputChange = event => {
@@ -32,10 +32,7 @@ class Signin extends Component {
         this.props.history.push(from.pathname);
       } catch (error) {
         console.log(error);
-        if (error.response) {
-          const { data } = error.response;
-          this.setState({ signinError: data });
-        }
+        this.setState({ signinError: "Something Went Wrong!" });
       }
     }
   };
@@ -51,7 +48,6 @@ class Signin extends Component {
           <div>
             <label>Email Address</label>
             <span> * </span>
-            <span style={styles.error}>{signinError.email}</span>
           </div>
 
           <input
@@ -67,7 +63,6 @@ class Signin extends Component {
           <div>
             <label>Password</label>
             <span> * </span>
-            <span style={styles.error}>{signinError.password}</span>
           </div>
 
           <input
@@ -80,6 +75,7 @@ class Signin extends Component {
         </div>
 
         <input type="submit" value="Submit!" />
+        <p style={styles.error}>{signinError}</p>
       </form>
     );
   }
