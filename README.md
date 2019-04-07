@@ -30,7 +30,9 @@ A collection of basic apps built with React and Spring.
 - [Grokking the System Design Interview](https://www.educative.io/collection/5668639101419520/5649050225344512)
 - [High Scalability](http://highscalability.com/)
 
-### Demo (Heroku free plan is initially slow)
+### Demo
+
+Heroku free plan is initially slow
 
 Todo
 
