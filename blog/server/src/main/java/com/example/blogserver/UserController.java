@@ -22,7 +22,7 @@ public class UserController {
                 .orElseThrow(() -> new ApplicationUserNotFoundException(id));
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("/signup")
     public void signUp(@RequestBody ApplicationUser user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         applicationUserRepository.save(user);

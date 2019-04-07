@@ -2,6 +2,7 @@ package com.example.blogserver;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -11,9 +12,12 @@ public class ApplicationUser {
     private long id;
 
     @NotNull
+    @Column(unique=true)
+    @Size(min=1)
     private String username;
 
     @NotNull
+    @Size(min=8)
     private String password;
 
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
@@ -37,5 +41,9 @@ public class ApplicationUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Blog> getBlogs() {
+        return blogs;
     }
 }
