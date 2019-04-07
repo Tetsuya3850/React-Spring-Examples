@@ -12,12 +12,12 @@ public class TodoController {
     @Autowired
     private TodoRepository todoRepository;
 
-    @PostMapping("/")
+    @PostMapping("")
     Todo newTodo(@Valid @RequestBody Todo newTodo) {
         return todoRepository.save(newTodo);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     List<Todo> getTodos() {
         return todoRepository.findAll();
     }

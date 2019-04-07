@@ -16,13 +16,13 @@ public class UserController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @PostMapping("/signup/")
+    @PostMapping("/signup")
     public void signUp(@RequestBody ApplicationUser user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         applicationUserRepository.save(user);
     }
 
-    @GetMapping("/{id}/")
+    @GetMapping("/{id}")
     ApplicationUser one(@PathVariable Long id) {
         return applicationUserRepository.findById(id)
                 .orElseThrow(() -> new ApplicationUserNotFoundException(id));
