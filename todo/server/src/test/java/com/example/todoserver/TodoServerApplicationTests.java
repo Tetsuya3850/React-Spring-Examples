@@ -11,7 +11,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -29,8 +28,7 @@ public class TodoServerApplicationTests {
 
     @Test
     public void getTest() throws Exception {
-        this.mvc.perform(get("/todos")).andExpect(status().isOk())
-                .andExpect(content().string("Hello World"));
+        this.mvc.perform(get("/todos")).andExpect(status().isOk());
     }
 
 }
