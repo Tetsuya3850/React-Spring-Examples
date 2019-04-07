@@ -1,20 +1,19 @@
-package com.example.instagramserver;
+package com.example.fileupload;
 
-import com.example.instagramserver.storage.StorageService;
+import com.example.fileupload.storage.StorageService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.example.fileupload.storage.StorageProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-
-import com.example.instagramserver.storage.StorageProperties;
 
 @EnableConfigurationProperties(StorageProperties.class)
 @SpringBootApplication
-public class InstagramServerApplication {
+public class FileuploadApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(InstagramServerApplication.class, args);
+		SpringApplication.run(FileuploadApplication.class, args);
 	}
 
 	@Bean

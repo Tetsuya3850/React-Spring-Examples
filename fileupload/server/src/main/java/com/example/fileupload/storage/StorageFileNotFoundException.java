@@ -1,4 +1,4 @@
-package com.example.instagramserver.storage;
+package com.example.fileupload.storage;
 
 public class StorageFileNotFoundException extends StorageException {
 

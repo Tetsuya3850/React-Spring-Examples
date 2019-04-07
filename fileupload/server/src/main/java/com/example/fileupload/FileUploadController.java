@@ -1,8 +1,10 @@
-package com.example.instagramserver;
+package com.example.fileupload;
 
-import com.example.instagramserver.storage.StorageFileNotFoundException;
-import com.example.instagramserver.storage.StorageService;
+import com.example.fileupload.storage.StorageFileNotFoundException;
+import com.example.fileupload.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,11 +20,17 @@ public class FileUploadController {
 
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file) {
-        if (!file.isEmpty()) {
-            storageService.store(file);
-            return "Success";
-        };
-        return "Failure";
+        storageService.store(file);
+        return "Success";
+    }
+
+    @GetMapping("/files/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+
+        Resource file = storageService.loadAsResource(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

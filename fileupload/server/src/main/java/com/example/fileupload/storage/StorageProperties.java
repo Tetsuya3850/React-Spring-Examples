@@ -1,4 +1,4 @@
-package com.example.instagramserver.storage;
+package com.example.fileupload.storage;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
