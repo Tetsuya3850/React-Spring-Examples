@@ -1,5 +1,7 @@
 package com.example.fileupload;
 
+import com.example.fileupload.post.Post;
+import com.example.fileupload.post.PostRepository;
 import com.example.fileupload.storage.StorageFileNotFoundException;
 import com.example.fileupload.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,28 +11,39 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 @RestController
 public class FileUploadController {
-    private final StorageService storageService;
 
     @Autowired
-    public FileUploadController(StorageService storageService) {
-        this.storageService = storageService;
+    private PostRepository postRepository;
+
+    @Autowired
+    private StorageService storageService;
+
+    @PostMapping("")
+    public Post handleFileUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        storageService.store(file);
+        String fileName = file.getOriginalFilename();
+        Post newPost = new Post();
+        newPost.setFilename(fileName);
+        newPost.setFileurl(request.getRequestURL().toString() + "files/" + fileName);
+        postRepository.save(newPost);
+        return newPost;
     }
 
-    @PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
-        storageService.store(file);
-        return "Success";
+    @GetMapping("")
+    public List<Post> handleFileUpload() {
+        return postRepository.findAll();
     }
 
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
+    public Resource serveFile(@PathVariable String filename) {
         Resource file = storageService.loadAsResource(filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+        return file;
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)
