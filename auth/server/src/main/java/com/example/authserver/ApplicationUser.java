@@ -10,8 +10,7 @@ import javax.validation.constraints.NotNull;
 public class ApplicationUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    private long id;
+    private Long id;
 
     @NotNull
     private String username;
@@ -19,7 +18,7 @@ public class ApplicationUser {
     @NotNull
     private String password;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
