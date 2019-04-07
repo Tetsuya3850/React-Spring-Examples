@@ -10,7 +10,10 @@ A collection of basic apps built with React and Spring.
 - [React Redux](https://github.com/reduxjs/react-redux)
 - [normalizr](https://github.com/paularmstrong/normalizr)
 - [Spring Boot](https://spring.io/projects/spring-boot)
+- [Spring MVC](https://spring.io/projects/spring-framework)
+- [Spring Security](https://spring.io/projects/spring-security)
 - [java-jwt](https://github.com/auth0/java-jwt)
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
 - [MySQL](https://www.mysql.com/)
 
 ### Learning Resources
