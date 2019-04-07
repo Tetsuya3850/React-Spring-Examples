@@ -15,6 +15,9 @@ A collection of basic apps built with React and Spring.
 
 ### Learning Resources
 
+- [React Docs](https://reactjs.org/)
+- [Redux Docs](http://redux.js.org/)
+- [React Router Docs](https://reacttraining.com/react-router/web/guides/quick-start)
 - [tylermcginnis.com](https://tylermcginnis.com/)
 - [Complete Intro to React by Brian Holt](https://frontendmasters.com/courses/react/)
 - [Getting Started with Redux by Dan Abramov](https://egghead.io/courses/getting-started-with-redux)
