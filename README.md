@@ -13,7 +13,7 @@ A collection of basic apps built with React and Spring.
 - [java-jwt](https://github.com/auth0/java-jwt)
 - [MySQL](https://www.mysql.com/)
 
-### Learning Resources (besides official docs)
+### Learning Resources
 
 - [tylermcginnis.com](https://tylermcginnis.com/)
 - [Complete Intro to React by Brian Holt](https://frontendmasters.com/courses/react/)
@@ -30,7 +30,7 @@ A collection of basic apps built with React and Spring.
 - [Grokking the System Design Interview](https://www.educative.io/collection/5668639101419520/5649050225344512)
 - [High Scalability](http://highscalability.com/)
 
-### Demo (Be ware, Heroku free plan requires an initial loading time)
+### Demo (Heroku free plan is initially slow)
 
 Todo
 
