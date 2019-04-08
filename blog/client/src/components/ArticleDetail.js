@@ -15,7 +15,7 @@ class ArticleDetail extends Component {
   render() {
     const { detail, article, authorInfo, history } = this.props;
     const { isFetching, error } = detail;
-    const isOwner = isAuthed() === article.author;
+    const isOwner = isAuthed() == article.applicationUser;
 
     if (isFetching) {
       return <div>LOADING...</div>;
@@ -47,7 +47,9 @@ class ArticleDetail extends Component {
 
         <div>
           <span>by </span>
-          <Link to={`/users/${article.author}`}>{authorInfo.name}</Link>
+          <Link to={`/users/${article.applicationUser}`}>
+            {authorInfo.username}
+          </Link>
         </div>
 
         <p>{article.text}</p>
@@ -75,7 +77,9 @@ const mapStateToProps = ({ articles, users, detail }, { match }) => {
   const article = articles[match.params.articleId]
     ? articles[match.params.articleId]
     : {};
-  const authorInfo = users[article.author] ? users[article.author] : {};
+  const authorInfo = users[article.applicationUser]
+    ? users[article.applicationUser]
+    : {};
   return {
     detail,
     article,

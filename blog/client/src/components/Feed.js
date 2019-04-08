@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import queryString from "query-string";
 import { handleFetchFeed } from "../reducers/feedReducer";
 import ArticlePreview from "./ArticlePreview";
 
 class Feed extends Component {
   componentDidMount() {
-    this.props.handleFetchFeed();
+    const values = queryString.parse(this.props.location.search);
+    const page = values.page ? values.page : 0;
+    this.props.handleFetchFeed(page);
   }
 
   render() {

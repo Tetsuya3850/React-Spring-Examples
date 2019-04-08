@@ -21,7 +21,7 @@ public class ApplicationUser {
     private String password;
 
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
-    private List<Blog> blogs;
+    private List<Article> articles;
 
     public long getId() {
         return id;
@@ -41,9 +41,5 @@ public class ApplicationUser {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<Blog> getBlogs() {
-        return blogs;
     }
 }

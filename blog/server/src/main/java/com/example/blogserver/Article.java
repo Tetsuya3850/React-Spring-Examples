@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 @Entity
-public class Blog {
+public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -22,7 +22,6 @@ public class Blog {
     @ManyToOne
     @JoinColumn(name="application_user_id")
     private ApplicationUser applicationUser;
-
 
     public long getId() {
         return id;

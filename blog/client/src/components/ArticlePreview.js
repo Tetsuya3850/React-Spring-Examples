@@ -8,7 +8,9 @@ const ArticlePreview = ({ article, authorInfo }) => (
       <Link to={`/articles/details/${article.id}`}>{article.title}</Link>
       <div>
         <span>by </span>
-        <Link to={`/users/${article.author}`}>{authorInfo.name}</Link>
+        <Link to={`/users/${article.applicationUser}`}>
+          {authorInfo.username}
+        </Link>
       </div>
     </div>
   </div>
@@ -26,7 +28,7 @@ const styles = {
 
 const mapStateToProps = ({ articles, users }, { articleId }) => {
   const article = articles[articleId];
-  const authorInfo = users[article.author];
+  const authorInfo = users[article.applicationUser];
   return {
     article,
     authorInfo

@@ -9,8 +9,8 @@ class EditArticle extends Component {
 
   async componentDidMount() {
     const { data } = await api.getArticle(this.props.match.params.articleId);
-    const { id, title, text, author } = data;
-    this.setState({ id, title, text, author: author.id });
+    const { id, title, text, applicationUser } = data;
+    this.setState({ id, title, text, author: applicationUser.id });
   }
 
   handleInputChange = event => {

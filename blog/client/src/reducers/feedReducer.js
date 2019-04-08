@@ -22,15 +22,15 @@ const fetchFeedSuccess = data => ({
   data
 });
 
-export const handleFetchFeed = () => async (dispatch, getState) => {
+export const handleFetchFeed = page => async (dispatch, getState) => {
   const { feed } = getState();
   if (feed.isFetching) {
     return;
   }
   dispatch(fetchFeedRequest());
   try {
-    const { data } = await api.getFeed();
-    const normalizedData = normalize(data, [article]);
+    const { data } = await api.getFeed(page);
+    const normalizedData = normalize(data.content, [article]);
     dispatch(addArticles(normalizedData.entities.articles));
     dispatch(addUsers(normalizedData.entities.users));
     dispatch(fetchFeedSuccess(normalizedData.result));

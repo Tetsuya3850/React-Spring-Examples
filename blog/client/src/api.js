@@ -14,7 +14,8 @@ export const getUser = userId => axios.get(`/users/${userId}`, setAuthHeader());
 
 export const addArticle = payload =>
   axios.post(`/articles`, payload, setAuthHeader());
-export const getFeed = () => axios.get(`/articles`, setAuthHeader());
+export const getFeed = page =>
+  axios.get(`/articles/?page=${page}`, setAuthHeader());
 export const getArticle = articleId =>
   axios.get(`/articles/${articleId}`, setAuthHeader());
 export const getUserFeed = userId =>
