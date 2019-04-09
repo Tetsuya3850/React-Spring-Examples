@@ -9,12 +9,12 @@ A collection of basic apps built with React and Spring.
 - [Redux Thunk](https://github.com/gaearon/redux-thunk)
 - [React Redux](https://github.com/reduxjs/react-redux)
 - [normalizr](https://github.com/paularmstrong/normalizr)
-- [Spring Boot](https://spring.io/projects/spring-boot)
-- [Spring MVC](https://spring.io/projects/spring-framework)
-- [Spring Security](https://spring.io/projects/spring-security)
-- [java-jwt](https://github.com/auth0/java-jwt)
-- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [spring-boot-starter-web](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web)
+- [spring-boot-starter-security](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security)
+- [java-jwt](https://mvnrepository.com/artifact/com.auth0/java-jwt)
+- [spring-boot-starter-data-jpa](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa)
 - [MySQL](https://www.mysql.com/)
+- [spring-boot-starter-test](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test)
 
 ### Learning Resources
 
@@ -32,6 +32,8 @@ A collection of basic apps built with React and Spring.
 - [Implementing JWT Authentication on Spring Boot APIs](https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/)
 - [Spring Data JPA Reference](https://docs.spring.io/spring-data/jpa/docs/2.1.6.RELEASE/reference/html/)
 - [Spring MVC Test Framework Reference](https://docs.spring.io/spring/docs/5.1.6.RELEASE/spring-framework-reference/testing.html#spring-mvc-test-framework)
+- [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
+- [Deploying Spring Boot Applications to Heroku](https://devcenter.heroku.com/articles/deploying-spring-boot-apps-to-heroku)
 - [Grokking the System Design Interview](https://www.educative.io/collection/5668639101419520/5649050225344512)
 - [High Scalability](http://highscalability.com/)
 
