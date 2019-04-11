@@ -10,3 +10,5 @@ An auth app example written by React and Spring.
 - Navbar UI changes based on auth.
 
 ## Demo
+
+https://auth-client-spring-3850.herokuapp.com/

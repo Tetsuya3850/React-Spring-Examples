@@ -41,8 +41,8 @@ A collection of basic apps built with React and Spring.
 
 Heroku free plan is initially slow
 
-Todo
+- [Todo](https://todo-client-spring-3850.herokuapp.com/)
 
-Auth
+- [Auth](https://auth-client-spring-3850.herokuapp.com/)
 
-Blog
+- [Blog](https://blog-client-spring-3850.herokuapp.com/)

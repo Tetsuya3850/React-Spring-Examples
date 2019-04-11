@@ -22,8 +22,13 @@ public class TodoServerApplicationTests {
     private MockMvc mvc;
 
     @Test
-    public void postTest() throws Exception {
-        this.mvc.perform(post("/todos")).andExpect(status().isOk());
+    public void postFailTest() throws Exception {
+        this.mvc.perform(post("/todos").param("text", "")).andExpect(status().isOk());
+    }
+
+    @Test
+    public void postSuccessTest() throws Exception {
+        this.mvc.perform(post("/todos").param("text", "swim")).andExpect(status().isOk());
     }
 
     @Test

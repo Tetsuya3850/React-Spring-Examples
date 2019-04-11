@@ -32,7 +32,7 @@ class Signup extends Component {
         await api.signup(payload);
         this.props.history.push("/signin");
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
         this.setState({ signupError: "Something Went Wrong!" });
       }
     }
