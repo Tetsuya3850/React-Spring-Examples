@@ -56,6 +56,7 @@ class EditArticle extends React.Component {
             value={title}
             onChange={this.handleInputChange}
             required
+            maxLength={100}
           />
         </div>
 
@@ -73,6 +74,7 @@ class EditArticle extends React.Component {
             required
             rows="15"
             style={styles.textarea}
+            maxLength={10000}
           />
         </div>
 
