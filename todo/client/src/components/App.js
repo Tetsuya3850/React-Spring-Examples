@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import Header from "./Header";
 import AddTodo from "./AddTodo";
 import TodoListContainer from "./TodoListContainer";
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
       <div style={styles.container}>

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { handleAddTodo } from "../reducers";
 
-class AddTodo extends Component {
+class AddTodo extends React.Component {
   state = {
     text: ""
   };

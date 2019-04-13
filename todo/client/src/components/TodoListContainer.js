@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { handleFetchTodos, handleDeleteTodo } from "../reducers";
 import Todo from "./Todo";
 
-class TodoListContainer extends Component {
+class TodoListContainer extends React.Component {
   componentDidMount() {
     this.props.handleFetchTodos();
   }

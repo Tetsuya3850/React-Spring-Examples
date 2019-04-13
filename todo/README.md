@@ -8,4 +8,6 @@ A todo app example written by React and Spring.
 
 ## Demo
 
+Heroku free plan requires initial loading time.
+
 https://todo-client-spring-3850.herokuapp.com/

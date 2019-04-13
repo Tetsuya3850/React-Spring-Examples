@@ -39,7 +39,7 @@ A collection of basic apps built with React and Spring.
 
 ### Demo
 
-Heroku free plan is initially slow
+Heroku free plan requires initial loading time.
 
 - Todo(https://todo-client-spring-3850.herokuapp.com/)
 
