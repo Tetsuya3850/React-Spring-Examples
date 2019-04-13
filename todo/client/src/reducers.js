@@ -101,7 +101,7 @@ const appReducer = (state = initialState, action) => {
       return {
         ...state,
         error: "",
-        todos: state.todos.concat(action.todo)
+        todos: state.todos.concat([action.todo])
       };
     case ADD_TODO_FAILURE:
       return {
