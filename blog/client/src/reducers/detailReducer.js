@@ -30,6 +30,7 @@ export const handleGetArticle = id => async dispatch => {
     dispatch(addUsers(normalizedData.entities.users));
     dispatch(fetchDetailSuccess());
   } catch (error) {
+    console.log(error);
     dispatch(fetchDetailFailure(error));
   }
 };

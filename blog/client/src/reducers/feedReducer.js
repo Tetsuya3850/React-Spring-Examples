@@ -17,23 +17,29 @@ const fetchFeedFailure = error => ({
   error: "Something Went Wrong!"
 });
 
-const fetchFeedSuccess = data => ({
+const fetchFeedSuccess = (data, first, last) => ({
   type: FETCH_FEED_SUCCESS,
-  data
+  data,
+  first,
+  last
 });
 
-export const handleFetchFeed = page => async (dispatch, getState) => {
-  const { feed } = getState();
-  if (feed.isFetching) {
-    return;
-  }
+export const handleFetchFeed = (page, redirect) => async (
+  dispatch,
+  getState
+) => {
   dispatch(fetchFeedRequest());
   try {
     const { data } = await api.getFeed(page);
+    const lastPage =
+      data.totalPages > 0 ? data.totalPages - 1 : data.totalPages;
+    if (page > lastPage) {
+      return redirect(lastPage);
+    }
     const normalizedData = normalize(data.content, [article]);
     dispatch(addArticles(normalizedData.entities.articles));
     dispatch(addUsers(normalizedData.entities.users));
-    dispatch(fetchFeedSuccess(normalizedData.result));
+    dispatch(fetchFeedSuccess(normalizedData.result, data.first, data.last));
   } catch (error) {
     console.log(error);
     dispatch(fetchFeedFailure(error));
@@ -43,7 +49,9 @@ export const handleFetchFeed = page => async (dispatch, getState) => {
 const initialState = {
   isFetching: false,
   error: "",
-  feedByIds: []
+  feedByIds: [],
+  first: null,
+  last: null
 };
 
 const feed = (state = initialState, action) => {
@@ -57,14 +65,18 @@ const feed = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: action.error
+        error: action.error,
+        first: null,
+        last: null
       };
     case FETCH_FEED_SUCCESS:
       return {
         ...state,
         isFetching: false,
         error: "",
-        feedByIds: action.data
+        feedByIds: action.data,
+        first: action.first,
+        last: action.last
       };
     default:
       return state;

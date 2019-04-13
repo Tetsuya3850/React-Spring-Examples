@@ -1,12 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
+import moment from "moment";
 import { handleGetArticle } from "../reducers/detailReducer";
 import { isAuthed } from "../tokenUtils";
 import * as api from "../api";
 
-class ArticleDetail extends Component {
+class ArticleDetail extends React.Component {
   componentDidMount() {
     const { match, handleGetArticle } = this.props;
     handleGetArticle(match.params.articleId);
@@ -15,6 +16,7 @@ class ArticleDetail extends Component {
   render() {
     const { detail, article, authorInfo, history } = this.props;
     const { isFetching, error } = detail;
+    const { id, title, text, created } = article;
     const isOwner = isAuthed() == article.applicationUser;
 
     if (isFetching) {
@@ -27,14 +29,14 @@ class ArticleDetail extends Component {
 
     return (
       <div>
-        <div style={styles.title}>
-          <div>{article.title}</div>
+        <div>{title}</div>
+        <div>
           {isOwner && (
             <div>
-              <Link to={`/articles/edit/${article.id}`}>Edit</Link>
+              <Link to={`/articles/edit/${id}`}>Edit</Link>
               <span
-                onClick={() => {
-                  api.deleteArticle(article.id);
+                onClick={async () => {
+                  await api.deleteArticle(id);
                   history.push(`/`);
                 }}
                 style={styles.deleteBtn}
@@ -44,15 +46,14 @@ class ArticleDetail extends Component {
             </div>
           )}
         </div>
-
         <div>
           <span>by </span>
-          <Link to={`/users/${article.applicationUser}`}>
-            {authorInfo.username}
-          </Link>
+          <Link to={`/users/${authorInfo.id}`}>{authorInfo.username}</Link>
         </div>
-
-        <p>{article.text}</p>
+        <div>
+          on {moment(created, "yyyymmddhhmmss.sss").format("MMMM Do YYYY")}
+        </div>
+        <p>{text}</p>
       </div>
     );
   }
@@ -61,12 +62,6 @@ class ArticleDetail extends Component {
 const styles = {
   error: {
     color: "red"
-  },
-  title: {
-    display: "flex",
-    justifyContent: "space-between",
-    paddingTop: "4px",
-    paddingBottom: "4px"
   },
   deleteBtn: {
     cursor: "pointer"

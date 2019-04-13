@@ -1,15 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import _ from "lodash";
 
 const ArticlePreview = ({ article, authorInfo }) => (
   <div>
     <div style={styles.container}>
-      <Link to={`/articles/details/${article.id}`}>{article.title}</Link>
+      <Link to={`/articles/details/${article.id}`}>
+        {_.truncate(article.title, { length: 12 })}
+      </Link>
       <div>
         <span>by </span>
         <Link to={`/users/${article.applicationUser}`}>
-          {authorInfo.username}
+          {_.truncate(authorInfo.username, { length: 15 })}
         </Link>
       </div>
     </div>
@@ -27,8 +30,10 @@ const styles = {
 };
 
 const mapStateToProps = ({ articles, users }, { articleId }) => {
-  const article = articles[articleId];
-  const authorInfo = users[article.applicationUser];
+  const article = articles[articleId] ? articles[articleId] : {};
+  const authorInfo = users[article.applicationUser]
+    ? users[article.applicationUser]
+    : {};
   return {
     article,
     authorInfo

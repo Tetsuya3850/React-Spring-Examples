@@ -24,20 +24,18 @@ const fetchUserFeedSuccess = (userId, data) => ({
 });
 
 export const handleFetchUserFeed = userId => async (dispatch, getState) => {
-  const { userFeed } = getState();
-  if (userFeed.isFetching) {
-    return;
-  }
   dispatch(fetchUserFeedRequest());
   try {
-    const response = await api.getUser(userId);
-    const normalizedUser = { [response.data.id]: response.data };
+    const getUserPromise = api.getUser(userId);
+    const getUserFeedPromise = api.getUserFeed(userId);
+    const [userResponse, userFeedResponse] = await Promise.all([
+      getUserPromise,
+      getUserFeedPromise
+    ]);
+    const normalizedUser = { [userResponse.data.id]: userResponse.data };
     dispatch(addUsers(normalizedUser));
-
-    const { data } = await api.getUserFeed(userId);
-    const normalizedData = normalize(data, [article]);
+    const normalizedData = normalize(userFeedResponse.data, [article]);
     dispatch(addArticles(normalizedData.entities.articles));
-
     dispatch(fetchUserFeedSuccess(userId, normalizedData.result));
   } catch (error) {
     console.log(error);

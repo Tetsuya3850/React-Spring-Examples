@@ -1,7 +1,7 @@
-package com.example.blogserver;
+package com.example.blogserver.article;
 
 public class ArticleNotFoundException extends RuntimeException {
-    ArticleNotFoundException(Long id) {
+   public ArticleNotFoundException(Long id) {
         super("Could not find article " + id);
     }
 }

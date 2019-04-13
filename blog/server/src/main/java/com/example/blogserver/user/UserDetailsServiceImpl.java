@@ -1,4 +1,4 @@
-package com.example.blogserver;
+package com.example.blogserver.user;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

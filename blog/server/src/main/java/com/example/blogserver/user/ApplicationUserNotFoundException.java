@@ -1,7 +1,7 @@
-package com.example.blogserver;
+package com.example.blogserver.user;
 
 public class ApplicationUserNotFoundException extends RuntimeException {
-    ApplicationUserNotFoundException(Long id) {
+    public ApplicationUserNotFoundException(Long id) {
         super("Could not find application user " + id);
     }
 }

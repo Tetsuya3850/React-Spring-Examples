@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import AuthRoute from "./AuthRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -13,7 +13,7 @@ import User from "./User";
 import ArticleDetail from "./ArticleDetail";
 import EditArticle from "./EditArticle";
 
-class AppContainer extends Component {
+class AppContainer extends React.Component {
   render() {
     return (
       <Router>
@@ -49,7 +49,7 @@ class AppContainer extends Component {
 
 const styles = {
   container: {
-    width: 300,
+    width: 320,
     position: "relative",
     margin: "0 auto"
   }

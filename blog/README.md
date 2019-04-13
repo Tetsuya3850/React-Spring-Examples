@@ -2,7 +2,12 @@ A blog app example written by React and Spring.
 
 ## Features
 
-- Auth with JWT.
+- An article can be added.
+- All articles can be read.
+- An article's detail can be read.
+- All articles of user can be read.
+- Articles can be edited.
+- Articles can be deleted.
 
 ## Demo
 

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { handleFetchUserFeed } from "../reducers/userFeedReducer";
 import ArticlePreview from "./ArticlePreview";
 
-class User extends Component {
+class User extends React.Component {
   componentDidMount() {
     const { match, handleFetchUserFeed } = this.props;
     handleFetchUserFeed(match.params.userId);
@@ -23,7 +23,7 @@ class User extends Component {
 
     return (
       <div>
-        <div>{userInfo.name}</div>
+        <div>{userInfo.username}</div>
         <div>
           {userArticleIds.map(articleId => (
             <ArticlePreview key={articleId} articleId={articleId} />

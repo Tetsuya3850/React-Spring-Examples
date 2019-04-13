@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import * as api from "../api";
 
-class NewArticle extends Component {
+class NewArticle extends React.Component {
   state = {
     title: "",
     text: ""
@@ -49,6 +49,7 @@ class NewArticle extends Component {
             value={title}
             onChange={this.handleInputChange}
             required
+            maxLength={100}
           />
         </div>
 
@@ -66,6 +67,7 @@ class NewArticle extends Component {
             required
             rows="15"
             style={styles.textarea}
+            maxLength={10000}
           />
         </div>
 

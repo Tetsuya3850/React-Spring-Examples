@@ -1,4 +1,8 @@
-package com.example.blogserver;
+package com.example.blogserver.user;
+
+import com.example.blogserver.article.Article;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,8 +12,8 @@ import java.util.List;
 @Entity
 public class ApplicationUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @NotNull
     @Column(unique=true)
@@ -18,12 +22,13 @@ public class ApplicationUser {
 
     @NotNull
     @Size(min=8)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
     private List<Article> articles;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -42,4 +47,5 @@ public class ApplicationUser {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

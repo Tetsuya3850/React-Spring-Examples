@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import * as api from "../api";
 
-class EditArticle extends Component {
+class EditArticle extends React.Component {
   state = {
     title: "",
     text: ""
@@ -9,8 +9,8 @@ class EditArticle extends Component {
 
   async componentDidMount() {
     const { data } = await api.getArticle(this.props.match.params.articleId);
-    const { id, title, text, applicationUser } = data;
-    this.setState({ id, title, text, author: applicationUser.id });
+    const { title, text } = data;
+    this.setState({ title, text });
   }
 
   handleInputChange = event => {
@@ -25,13 +25,12 @@ class EditArticle extends Component {
   handleFormSubmit = async event => {
     event.preventDefault();
     const { title, text } = this.state;
+    const { articleId } = this.props.match.params;
     if (title && text) {
-      const payload = this.state;
+      const payload = { title, text };
       try {
-        await api.editArticle(payload);
-        this.props.history.push(
-          `/articles/details/${this.props.match.params.articleId}`
-        );
+        await api.editArticle(articleId, payload);
+        this.props.history.push(`/articles/details/${articleId}`);
       } catch (error) {
         console.log(error);
       }

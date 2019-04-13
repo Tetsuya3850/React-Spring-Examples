@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import * as api from "../api";
 import { saveToken } from "../tokenUtils";
 
@@ -26,6 +27,7 @@ class Signin extends Component {
         const payload = { username: email, password };
         const { data } = await api.signin(payload);
         saveToken(data);
+        axios.defaults.headers.common["authorization"] = `Bearer ${data}`;
         const { from } = this.props.location.state || {
           from: { pathname: "/" }
         };
