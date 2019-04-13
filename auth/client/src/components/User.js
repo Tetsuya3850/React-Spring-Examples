@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import * as api from "../api";
 
-class User extends Component {
+class User extends React.Component {
   state = {
     userInfo: {}
   };

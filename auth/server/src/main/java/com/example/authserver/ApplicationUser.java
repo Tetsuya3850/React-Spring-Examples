@@ -1,5 +1,7 @@
 package com.example.authserver;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -7,7 +9,7 @@ import javax.validation.constraints.Size;
 @Entity
 public class ApplicationUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
@@ -17,6 +19,7 @@ public class ApplicationUser {
 
     @NotNull
     @Size(min=8)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public Long getId() {

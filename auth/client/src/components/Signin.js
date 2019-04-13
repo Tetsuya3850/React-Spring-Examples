@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import * as api from "../api";
 import { saveToken } from "../tokenUtils";
 
-class Signin extends Component {
+class Signin extends React.Component {
   state = {
     email: "",
     password: "",
@@ -75,6 +75,7 @@ class Signin extends Component {
         </div>
 
         <input type="submit" value="Submit!" />
+
         <p style={styles.error}>{signinError}</p>
       </form>
     );

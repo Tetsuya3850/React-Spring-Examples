@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    ApplicationUser one(@PathVariable Long id) {
+    ApplicationUser getUser(@PathVariable Long id) {
         return applicationUserRepository.findById(id)
                 .orElseThrow(() -> new ApplicationUserNotFoundException(id));
     }

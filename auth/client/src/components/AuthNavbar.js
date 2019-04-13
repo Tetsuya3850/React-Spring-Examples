@@ -4,12 +4,12 @@ import { removeToken } from "../tokenUtils";
 
 const AuthNavBar = ({ history, authedId }) => (
   <div style={styles.container}>
-    <NavLink to="/" exact activeStyle={{ color: "red" }} style={styles.leftNav}>
+    <NavLink to="/" exact activeStyle={styles.active} style={styles.leftNav}>
       Home
     </NavLink>
     <NavLink
       to={`/users/${authedId}`}
-      activeStyle={{ color: "red" }}
+      activeStyle={styles.active}
       style={styles.rightNavs}
     >
       Profile
@@ -29,6 +29,9 @@ const AuthNavBar = ({ history, authedId }) => (
 const styles = {
   container: {
     display: "flex"
+  },
+  active: {
+    color: "red"
   },
   leftNav: {
     flexGrow: 4

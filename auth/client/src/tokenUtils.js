@@ -12,7 +12,7 @@ export const getTokenInfo = () => {
       return JSON.parse(payload);
     }
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
 

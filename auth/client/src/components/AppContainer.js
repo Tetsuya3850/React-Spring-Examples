@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import AuthRoute from "./AuthRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -9,7 +9,7 @@ import Signup from "./Signup";
 import Signin from "./Signin";
 import User from "./User";
 
-class AppContainer extends Component {
+class AppContainer extends React.Component {
   render() {
     return (
       <Router>
