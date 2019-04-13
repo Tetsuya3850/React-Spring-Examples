@@ -41,8 +41,8 @@ A collection of basic apps built with React and Spring.
 
 Heroku free plan requires initial loading time.
 
-- Todo(https://todo-client-spring-3850.herokuapp.com/)
+- Todo (https://todo-client-spring-3850.herokuapp.com/)
 
-- Auth(https://auth-client-spring-3850.herokuapp.com/)
+- Auth (https://auth-client-spring-3850.herokuapp.com/)
 
-- Blog(https://blog-client-spring-3850.herokuapp.com/)
+- Blog (https://blog-client-spring-3850.herokuapp.com/)
