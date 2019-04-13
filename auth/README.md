@@ -11,4 +11,6 @@ An auth app example written by React and Spring.
 
 ## Demo
 
+Heroku free plan requires initial loading time.
+
 https://auth-client-spring-3850.herokuapp.com/
