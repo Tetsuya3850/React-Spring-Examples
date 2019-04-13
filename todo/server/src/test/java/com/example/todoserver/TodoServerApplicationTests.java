@@ -21,10 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class TodoServerApplicationTests {
 
-    // https://stackoverflow.com/questions/17143116/integration-testing-posting-an-entire-object-to-spring-mvc-controller
-    // https://github.com/spring-projects/spring-boot/issues/7321
-    // https://github.com/spring-projects/spring-framework/blob/master/spring-test/src/test/java/org/springframework/test/web/servlet/samples/standalone/resultmatchers/JsonPathAssertionTests.java
-
     @Autowired
     private MockMvc mvc;
 
@@ -47,14 +43,16 @@ public class TodoServerApplicationTests {
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is4xxClientError());
 
-        newTodo.setText("swim");
+        String todo_text = "swim";
+
+        newTodo.setText(todo_text);
 
         this.mvc.perform(post("/todos")
                 .content(asJsonString(newTodo))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk()).andExpect(jsonPath("$.text").value("swim"));
+        ).andExpect(status().isOk()).andExpect(jsonPath("$.text").value(todo_text));
 
-        this.mvc.perform(get("/todos")).andExpect(status().isOk()).andExpect(jsonPath("$[0].text").value("swim"));
+        this.mvc.perform(get("/todos")).andExpect(status().isOk()).andExpect(jsonPath("$[0].text").value(todo_text));
 
         this.mvc.perform(delete("/todos/{id}", 1)).andExpect(status().isOk());
 
