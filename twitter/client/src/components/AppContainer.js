@@ -19,10 +19,13 @@ import Followers from "./Followers";
 import HeartedTweets from "./HeartedTweets";
 import { isAuthed } from "../tokenUtils";
 import { handleFetchOwnInfo } from "../reducers/ownInfoReducer";
+import axios from "axios";
+import { getToken } from "../tokenUtils";
 
 class AppContainer extends React.Component {
   async componentDidMount() {
     if (isAuthed()) {
+      axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
       this.props.handleFetchOwnInfo();
     }
   }

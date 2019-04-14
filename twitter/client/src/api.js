@@ -1,10 +1,7 @@
 import axios from "axios";
-import { getToken } from "./tokenUtils";
 
-const SERVER_URL = "http://localhost:8080";
+const SERVER_URL = "https://twitter-server-spring-3850.herokuapp.com";
 axios.defaults.baseURL = SERVER_URL;
-
-axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
 
 export const signup = payload => axios.post(`/users/signup`, payload);
 export const signin = payload => axios.post(`/login`, payload);
