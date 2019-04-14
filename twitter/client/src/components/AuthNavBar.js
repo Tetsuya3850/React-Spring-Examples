@@ -8,7 +8,7 @@ const AuthNavBar = ({ history, authedId }) => (
       Home
     </NavLink>
     <NavLink
-      to={`/users/${authedId}`}
+      to={`/users/details/${authedId}`}
       exact
       activeStyle={styles.active}
       style={styles.rightNavs}

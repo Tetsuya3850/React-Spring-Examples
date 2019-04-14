@@ -10,8 +10,14 @@ import java.util.List;
 public interface HeartRepository extends JpaRepository<Heart, Long> {
     Heart findByApplicationUserAndTweet(ApplicationUser applicationUser, Tweet tweet);
 
-    List<HeartTweetOnly> findByApplicationUser(ApplicationUser applicationUser);
+    @Query("select h.tweet from Heart h where h.applicationUser = ?1")
+    List<Tweet> getByApplicationUser(ApplicationUser applicationUser);
+
+    @Query("select h.applicationUser from Heart h where h.tweet.id = ?1")
+    List<ApplicationUser> getByTweetId(Long id);
 
     @Query("select h.tweet.id from Heart h where h.applicationUser = ?1")
     List<Long> getAllHeartedTweetIds(ApplicationUser applicationUser);
+
+
 }

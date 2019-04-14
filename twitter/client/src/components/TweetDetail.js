@@ -6,6 +6,7 @@ import moment from "moment";
 import { handleGetTweet } from "../reducers/detailReducer";
 import { isAuthed } from "../tokenUtils";
 import * as api from "../api";
+import UserPreview from "./UserPreview";
 
 class TweetDetail extends React.Component {
   componentDidMount() {
@@ -14,8 +15,8 @@ class TweetDetail extends React.Component {
   }
 
   render() {
-    const { detail, tweet, authorInfo, history } = this.props;
-    const { isFetching, error } = detail;
+    const { detail, tweet, user, history } = this.props;
+    const { isFetching, error, heartedUsersById } = detail;
     const { id, text, created } = tweet;
     const isOwner = isAuthed() == tweet.applicationUser;
 
@@ -29,8 +30,9 @@ class TweetDetail extends React.Component {
 
     return (
       <div style={styles.container}>
-        <Link to={`/users/${authorInfo.id}`}>{authorInfo.username}</Link>
+        <Link to={`/users/${user.id}`}>{user.username}</Link>
         <div>{moment(created, "yyyymmddhhmmss.sss").toISOString()}</div>
+        <span>Number of hearts: {tweet.heartCount}</span>
         {isOwner && (
           <div
             onClick={async () => {
@@ -42,7 +44,12 @@ class TweetDetail extends React.Component {
             Delete
           </div>
         )}
-        <p>{text}</p>
+        <div>{text}</div>
+        <hr />
+        <div>Hearted Users</div>
+        {heartedUsersById.map(userId => (
+          <UserPreview key={userId} userId={userId} />
+        ))}
       </div>
     );
   }
@@ -53,9 +60,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    paddingTop: "4px",
-    paddingBottom: "4px",
-    borderBottom: "1px solid grey",
     wordWrap: "break-word"
   },
   error: {
@@ -70,13 +74,11 @@ const mapStateToProps = ({ tweets, users, detail }, { match }) => {
   const tweet = tweets[match.params.tweetId]
     ? tweets[match.params.tweetId]
     : {};
-  const authorInfo = users[tweet.applicationUser]
-    ? users[tweet.applicationUser]
-    : {};
+  const user = users[tweet.applicationUser] ? users[tweet.applicationUser] : {};
   return {
     detail,
     tweet,
-    authorInfo
+    user
   };
 };
 

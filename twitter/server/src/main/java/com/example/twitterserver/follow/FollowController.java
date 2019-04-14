@@ -38,14 +38,14 @@ public class FollowController {
     }
 
     @GetMapping("/following/{followerId}")
-    List<Follow> getFollowing(@PathVariable Long followerId){
+    List<ApplicationUser> getFollowing(@PathVariable Long followerId){
         ApplicationUser follower = applicationUserRepository.findById(followerId).orElseThrow(() -> new ApplicationUserNotFoundException(followerId));
-        return followRepository.findByFollower(follower);
+        return followRepository.getByFollower(follower);
     }
 
     @GetMapping("/followers/{followeeId}")
-    List<Follow> getFollowers(@PathVariable Long followeeId){
+    List<ApplicationUser> getFollowers(@PathVariable Long followeeId){
         ApplicationUser followee = applicationUserRepository.findById(followeeId).orElseThrow(() -> new ApplicationUserNotFoundException(followeeId));
-        return followRepository.findByFollowee(followee);
+        return followRepository.getByFollowee(followee);
     }
 }

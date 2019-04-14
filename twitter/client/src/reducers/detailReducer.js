@@ -2,7 +2,7 @@ import * as api from "../api";
 import { addTweets } from "./tweetsReducer";
 import { addUsers } from "./usersReducer";
 import { normalize } from "normalizr";
-import { tweet } from "./schema";
+import { tweet, user } from "./schema";
 
 const FETCH_DETAIL_REQUEST = "FETCH_DETAIL_REQUEST";
 const FETCH_DETAIL_FAILURE = "FETCH_DETAIL_FAILURE";
@@ -17,18 +17,26 @@ const fetchDetailFailure = error => ({
   error: "Something Went Wrong!"
 });
 
-const fetchDetailSuccess = () => ({
-  type: FETCH_DETAIL_SUCCESS
+const fetchDetailSuccess = data => ({
+  type: FETCH_DETAIL_SUCCESS,
+  data
 });
 
-export const handleGetTweet = id => async dispatch => {
+export const handleGetTweet = tweetId => async dispatch => {
   dispatch(fetchDetailRequest());
   try {
-    const { data } = await api.getTweet(id);
-    const normalizedData = normalize(data, tweet);
-    dispatch(addTweets(normalizedData.entities.tweets));
-    dispatch(addUsers(normalizedData.entities.users));
-    dispatch(fetchDetailSuccess());
+    const getTweetPromise = api.getTweet(tweetId);
+    const getHeartedUserPromise = api.getHeartedUsers(tweetId);
+    const [tweetResponse, usersResponse] = await Promise.all([
+      getTweetPromise,
+      getHeartedUserPromise
+    ]);
+    const normalizedTweetResponseData = normalize(tweetResponse.data, tweet);
+    dispatch(addTweets(normalizedTweetResponseData.entities.tweets));
+    dispatch(addUsers(normalizedTweetResponseData.entities.users));
+    const normalizedUsersResponseData = normalize(usersResponse.data, [user]);
+    dispatch(addUsers(normalizedUsersResponseData.entities.users));
+    dispatch(fetchDetailSuccess(normalizedUsersResponseData.result));
   } catch (error) {
     console.log(error);
     dispatch(fetchDetailFailure(error));
@@ -37,7 +45,8 @@ export const handleGetTweet = id => async dispatch => {
 
 const initialState = {
   isFetching: false,
-  error: ""
+  error: "",
+  heartedUsersById: []
 };
 
 const detail = (state = initialState, action) => {
@@ -57,7 +66,8 @@ const detail = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: ""
+        error: "",
+        heartedUsersById: action.data
       };
     default:
       return state;

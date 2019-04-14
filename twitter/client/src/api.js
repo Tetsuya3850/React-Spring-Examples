@@ -13,7 +13,13 @@ export const getUserList = () => axios.get(`/users`);
 export const getOwnInfo = () => axios.get(`/users/me`);
 
 export const toggleFollow = userId => axios.post(`/follows/${userId}`);
+export const getFollowing = userId => axios.get(`/follows/following/${userId}`);
+export const getFollowers = userId => axios.get(`/follows/followers/${userId}`);
+
 export const toggleHeart = tweetId => axios.post(`/hearts/${tweetId}`);
+export const getHeartedTweets = userId => axios.get(`/hearts/users/${userId}`);
+export const getHeartedUsers = tweetId =>
+  axios.get(`/hearts/tweets/${tweetId}`);
 
 export const addTweet = payload => axios.post(`/tweets`, payload);
 export const getFeed = () => axios.get(`/tweets`);

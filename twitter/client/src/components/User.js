@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Link } from "react-router-dom";
 import { handleFetchUserFeed } from "../reducers/userFeedReducer";
 import TweetPreview from "./TweetPreview";
-import { handleFollow, handleUnfollow } from "../reducers/ownInfoReducer";
+import FollowBtn from "./FollowBtn";
 
 class User extends React.Component {
   componentDidMount() {
@@ -12,16 +13,7 @@ class User extends React.Component {
   }
 
   render() {
-    const {
-      isFetching,
-      error,
-      userInfo,
-      userTweetIds,
-      followed,
-      me,
-      handleFollow,
-      handleUnfollow
-    } = this.props;
+    const { isFetching, error, user, userTweetIds, followed, me } = this.props;
 
     if (isFetching) {
       return <div>LOADING...</div>;
@@ -31,22 +23,18 @@ class User extends React.Component {
       return <div style={styles.error}>{error}</div>;
     }
 
-    let followBtn;
-    if (!me) {
-      followBtn = !followed ? (
-        <span onClick={() => handleFollow(userInfo.id)}>Follow</span>
-      ) : (
-        <span onClick={() => handleUnfollow(userInfo.id)}>Unfollow</span>
-      );
-    }
-
     return (
       <div>
         <div style={styles.userInfo}>
-          <div>Id: {userInfo.username}</div>
-          <div>Following: {userInfo.followingCount}</div>
-          <div>Followers: {userInfo.followersCount}</div>
-          {followBtn}
+          <div>Id: {user.username}</div>
+          <Link to={`/users/following/${user.id}`}>
+            Following: {user.followingCount}
+          </Link>
+          <Link to={`/users/followers/${user.id}`}>
+            Followers: {user.followersCount}
+          </Link>
+          <Link to={`/users/hearts/${user.id}`}>Hearted Tweets</Link>
+          <FollowBtn me={me} followed={followed} user={user} />
         </div>
 
         <div>
@@ -61,6 +49,8 @@ class User extends React.Component {
 
 const styles = {
   userInfo: {
+    display: "flex",
+    flexDirection: "column",
     borderBottom: "1px solid grey"
   },
   error: {
@@ -69,7 +59,7 @@ const styles = {
 };
 
 const mapStateToProps = ({ users, userFeed, ownInfo }, { match, authedId }) => {
-  const userInfo = users[match.params.userId] ? users[match.params.userId] : {};
+  const user = users[match.params.userId] ? users[match.params.userId] : {};
   const userTweetIds = userFeed.userFeedByIds[match.params.userId]
     ? userFeed.userFeedByIds[match.params.userId]
     : [];
@@ -81,7 +71,7 @@ const mapStateToProps = ({ users, userFeed, ownInfo }, { match, authedId }) => {
   return {
     isFetching,
     error,
-    userInfo,
+    user,
     userTweetIds,
     followed,
     me
@@ -89,10 +79,7 @@ const mapStateToProps = ({ users, userFeed, ownInfo }, { match, authedId }) => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { handleFetchUserFeed, handleFollow, handleUnfollow },
-    dispatch
-  );
+  return bindActionCreators({ handleFetchUserFeed }, dispatch);
 };
 
 export default connect(

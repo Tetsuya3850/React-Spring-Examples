@@ -4,16 +4,10 @@ import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import { handleHeart, handleUnheart } from "../reducers/ownInfoReducer";
 
-const TweetPreview = ({
-  tweet,
-  authorInfo,
-  hearted,
-  handleHeart,
-  handleUnheart
-}) => (
+const TweetPreview = ({ tweet, user, hearted, handleHeart, handleUnheart }) => (
   <div>
     <div style={styles.container}>
-      <Link to={`/users/${tweet.applicationUser}`}>{authorInfo.username}</Link>
+      <Link to={`/users/details/${user.id}`}>{user.username}</Link>
       <div>{tweet.text}</div>
       <div>
         {!hearted ? (
@@ -53,13 +47,11 @@ const styles = {
 
 const mapStateToProps = ({ tweets, users, ownInfo }, { tweetId }) => {
   const tweet = tweets[tweetId] ? tweets[tweetId] : {};
-  const authorInfo = users[tweet.applicationUser]
-    ? users[tweet.applicationUser]
-    : {};
+  const user = users[tweet.applicationUser] ? users[tweet.applicationUser] : {};
   const hearted = ownInfo.heartedTweetIds.includes(tweetId);
   return {
     tweet,
-    authorInfo,
+    user,
     hearted
   };
 };

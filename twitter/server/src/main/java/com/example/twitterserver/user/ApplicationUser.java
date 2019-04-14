@@ -24,6 +24,8 @@ public class ApplicationUser {
 
     private int followingCount = 0;
 
+    // ahh
+
     private int followersCount = 0;
 
     public Long getId() {

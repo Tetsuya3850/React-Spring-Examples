@@ -29,7 +29,7 @@ export const handleFetchFeed = () => async dispatch => {
     const normalizedData = normalize(data, [tweet]);
     dispatch(addTweets(normalizedData.entities.tweets));
     dispatch(addUsers(normalizedData.entities.users));
-    dispatch(fetchFeedSuccess(normalizedData.result, data.first, data.last));
+    dispatch(fetchFeedSuccess(normalizedData.result));
   } catch (error) {
     console.log(error);
     dispatch(fetchFeedFailure(error));

@@ -14,6 +14,9 @@ import NewTweet from "./NewTweet";
 import UserList from "./UserList";
 import User from "./User";
 import TweetDetail from "./TweetDetail";
+import Following from "./Following";
+import Followers from "./Followers";
+import HeartedTweets from "./HeartedTweets";
 import { isAuthed } from "../tokenUtils";
 import { handleFetchOwnInfo } from "../reducers/ownInfoReducer";
 
@@ -41,8 +44,16 @@ class AppContainer extends React.Component {
           />
           <Route path="/signup" component={Signup} />
           <Route path="/signin" component={Signin} />
+
           <PrivateRoute exact path="/users" component={UserList} />
-          <PrivateRoute path="/users/:userId" component={User} />
+          <PrivateRoute path="/users/details/:userId" component={User} />
+          <PrivateRoute path="/users/following/:userId" component={Following} />
+          <PrivateRoute path="/users/followers/:userId" component={Followers} />
+          <PrivateRoute
+            path="/users/hearts/:userId"
+            component={HeartedTweets}
+          />
+
           <PrivateRoute path="/tweets/new" component={NewTweet} />
           <PrivateRoute
             path="/tweets/details/:tweetId"

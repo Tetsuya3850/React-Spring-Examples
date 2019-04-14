@@ -2,9 +2,7 @@ package com.example.twitterserver.tweet;
 
 import com.example.twitterserver.follow.Follow;
 import com.example.twitterserver.follow.FollowRepository;
-import com.example.twitterserver.heart.Heart;
 import com.example.twitterserver.heart.HeartRepository;
-import com.example.twitterserver.heart.HeartTweetOnly;
 import com.example.twitterserver.user.ApplicationUser;
 import com.example.twitterserver.user.ApplicationUserNotFoundException;
 import com.example.twitterserver.user.ApplicationUserRepository;
@@ -43,10 +41,10 @@ public class TweetController {
     @GetMapping("")
     List<Tweet> getFeed(Authentication auth) {
         ApplicationUser applicationUser = applicationUserRepository.findByUsername(auth.getName());
-        List<Follow> following = followRepository.findByFollower(applicationUser);
+        List<ApplicationUser> following = followRepository.getByFollower(applicationUser);
         List<Tweet> feed = new ArrayList<>();
-        for(Follow follow : following){
-            feed.addAll(tweetRepository.findByApplicationUser(follow.getFollowee()));
+        for(ApplicationUser appUser : following){
+            feed.addAll(tweetRepository.findByApplicationUser(appUser));
         }
         feed.addAll(tweetRepository.findByApplicationUser(applicationUser));
         feed.sort(Comparator.comparing(Tweet::getCreated).reversed());

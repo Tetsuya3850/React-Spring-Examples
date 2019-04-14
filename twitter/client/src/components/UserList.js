@@ -36,12 +36,7 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ userList }, { authedId }) => {
-  return {
-    ...userList,
-    userListByIds: userList.userListByIds.filter(id => id != authedId)
-  };
-};
+const mapStateToProps = ({ userList }) => userList;
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ handleFetchUserList }, dispatch);
