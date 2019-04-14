@@ -178,10 +178,36 @@ public class TwitterServerApplicationTests {
 		String id2 = getIdFromJWT(token2);
 		System.out.println(id2);
 
+		// Get all users
+		mvc.perform(get("/users")
+				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token1))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[2]").exists())
+				.andExpect(jsonPath("$[3]").doesNotExist());
+
+
 		// user1 follows user2
 		mvc.perform(post("/follows/{id}", id2)
 				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token1))
 				.andExpect(status().isOk());
+
+		// user1 is following user2
+		mvc.perform((get("/follows/following/{userId}", id1))
+				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token1))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].username").value(user2));
+
+		// user2 is followed by user1
+		mvc.perform((get("/follows/followers/{userId}", id2))
+				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token1))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].username").value(user1));
+
+		// user2 is added to user1's followed users
+		mvc.perform((get("/users/me"))
+				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token1))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.followingUserIds[0]").value(id2));
 
 		// user1's follow count
 		mvc.perform(get("/users/{id}", id1)
@@ -234,6 +260,24 @@ public class TwitterServerApplicationTests {
 		mvc.perform(post("/hearts/{tweetId}", tweet3.getId())
 				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token1))
 				.andExpect(status().isOk());
+
+		// user1 has hearted tweet3
+		mvc.perform(get("/hearts/users/{userId}", id1)
+				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token1))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].text").value(tweet3.getText()));
+
+		// tweet3 was hearted by user1
+		mvc.perform(get("/hearts/tweets/{tweetId}", tweet3.getId())
+				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token1))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].username").value(user1));
+
+		// tweet3 is added to user1's hearted tweets
+		mvc.perform((get("/users/me"))
+				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token1))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.heartedTweetIds[0]").value(tweet3.getId()));
 
 		// Heart count incremented
 		mvc.perform(get("/tweets/{tweetId}", tweet3.getId())
