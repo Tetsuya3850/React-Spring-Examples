@@ -1,0 +1,71 @@
+import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import AuthRoute from "./AuthRoute";
+import PrivateRoute from "./PrivateRoute";
+import AuthNavBar from "./AuthNavBar";
+import UnAuthNavBar from "./UnAuthNavBar";
+import Feed from "./Feed";
+import Hello from "./Hello";
+import Signup from "./Signup";
+import Signin from "./Signin";
+import NewTweet from "./NewTweet";
+import UserList from "./UserList";
+import User from "./User";
+import TweetDetail from "./TweetDetail";
+import { isAuthed } from "../tokenUtils";
+import { handleFetchOwnInfo } from "../reducers/ownInfoReducer";
+
+class AppContainer extends React.Component {
+  async componentDidMount() {
+    if (isAuthed()) {
+      this.props.handleFetchOwnInfo();
+    }
+  }
+
+  render() {
+    return (
+      <Router>
+        <div style={styles.container}>
+          <AuthRoute
+            path="/"
+            authComponent={AuthNavBar}
+            unAuthComponent={UnAuthNavBar}
+          />
+          <AuthRoute
+            exact
+            path="/"
+            authComponent={Feed}
+            unAuthComponent={Hello}
+          />
+          <Route path="/signup" component={Signup} />
+          <Route path="/signin" component={Signin} />
+          <PrivateRoute exact path="/users" component={UserList} />
+          <PrivateRoute path="/users/:userId" component={User} />
+          <PrivateRoute path="/tweets/new" component={NewTweet} />
+          <PrivateRoute
+            path="/tweets/details/:tweetId"
+            component={TweetDetail}
+          />
+        </div>
+      </Router>
+    );
+  }
+}
+
+const styles = {
+  container: {
+    width: 320,
+    position: "relative",
+    margin: "0 auto"
+  }
+};
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ handleFetchOwnInfo }, dispatch);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AppContainer);

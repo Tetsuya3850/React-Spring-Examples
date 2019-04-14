@@ -21,9 +21,9 @@ public class Follow {
     public Follow() {
     }
 
-    public Follow(ApplicationUser follower, ApplicationUser followeee) {
+    public Follow(ApplicationUser follower, ApplicationUser followee) {
         this.follower = follower;
-        this.followee = followeee;
+        this.followee = followee;
     }
 
     public Long getId() {

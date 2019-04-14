@@ -2,6 +2,9 @@ package com.example.twitterserver.tweet;
 
 import com.example.twitterserver.follow.Follow;
 import com.example.twitterserver.follow.FollowRepository;
+import com.example.twitterserver.heart.Heart;
+import com.example.twitterserver.heart.HeartRepository;
+import com.example.twitterserver.heart.HeartTweetOnly;
 import com.example.twitterserver.user.ApplicationUser;
 import com.example.twitterserver.user.ApplicationUserNotFoundException;
 import com.example.twitterserver.user.ApplicationUserRepository;
@@ -27,6 +30,9 @@ public class TweetController {
     @Autowired
     private FollowRepository followRepository;
 
+    @Autowired
+    private HeartRepository heartRepository;
+
     @PostMapping("")
     Tweet postTweet(@Valid @RequestBody Tweet newTweet, Authentication authentication) {
         ApplicationUser applicationUser = applicationUserRepository.findByUsername(authentication.getName());
@@ -38,7 +44,7 @@ public class TweetController {
     List<Tweet> getFeed(Authentication auth) {
         ApplicationUser applicationUser = applicationUserRepository.findByUsername(auth.getName());
         List<Follow> following = followRepository.findByFollower(applicationUser);
-        List<Tweet> feed = new ArrayList<Tweet>();
+        List<Tweet> feed = new ArrayList<>();
         for(Follow follow : following){
             feed.addAll(tweetRepository.findByApplicationUser(follow.getFollowee()));
         }

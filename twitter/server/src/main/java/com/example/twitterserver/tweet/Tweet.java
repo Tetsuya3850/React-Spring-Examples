@@ -65,4 +65,5 @@ public class Tweet {
     public void decrementHeartCount() {
         this.heartCount -= 1;
     }
+
 }

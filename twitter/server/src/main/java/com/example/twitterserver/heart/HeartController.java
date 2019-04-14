@@ -40,11 +40,9 @@ public class HeartController {
         tweetRepository.save(tweet);
     }
 
-    @GetMapping("/{userId}")
-    List<Heart> getHearts(@PathVariable Long userId){
+    @GetMapping("/users/{userId}")
+    List<HeartTweetOnly> getHeartedTweets(@PathVariable Long userId){
         ApplicationUser applicationUser = applicationUserRepository.findById(userId).orElseThrow(() -> new ApplicationUserNotFoundException(userId));
         return heartRepository.findByApplicationUser(applicationUser);
     }
-
-
 }
