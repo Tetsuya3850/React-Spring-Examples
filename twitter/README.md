@@ -15,4 +15,4 @@ A Twitter app example written by React and Spring
 
 ## Demo
 
-https://twiiter-client-spring-3850.herokuapp.com/
+https://twitter-client-spring-3850.herokuapp.com/

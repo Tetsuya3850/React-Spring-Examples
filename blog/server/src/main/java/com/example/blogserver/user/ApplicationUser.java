@@ -25,9 +25,6 @@ public class ApplicationUser {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
-    private List<Article> articles;
-
     public Long getId() {
         return id;
     }

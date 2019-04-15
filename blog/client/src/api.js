@@ -1,10 +1,12 @@
 import axios from "axios";
-import { getToken } from "./tokenUtils";
+import { isAuthed, getToken } from "./tokenUtils";
 
 const SERVER_URL = "https://blog-server-spring-3850.herokuapp.com";
 axios.defaults.baseURL = SERVER_URL;
 
-axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
+if (isAuthed()) {
+  axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
+}
 
 export const signup = payload => axios.post(`/users/signup`, payload);
 export const signin = payload => axios.post(`/login`, payload);
