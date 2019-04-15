@@ -9,7 +9,7 @@ const UserPreview = ({ user, followed, me }) => {
   return (
     <div>
       <div style={styles.container}>
-        <Link to={`/users/${user.id}`}>{user.username}</Link>
+        <Link to={`/users/details/${user.id}`}>{user.username}</Link>
         <FollowBtn me={me} followed={followed} user={user} />
       </div>
     </div>
