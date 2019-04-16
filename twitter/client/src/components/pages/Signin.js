@@ -1,12 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import axios from "axios";
-import * as api from "../api";
-import { saveToken } from "../tokenUtils";
-import { handleFetchOwnInfo } from "../reducers/ownInfoReducer";
+import * as api from "../../api";
+import { saveToken } from "../../tokenUtils";
+import { handleFetchOwnInfo } from "../../reducers/ownInfoReducer";
 
-class Signin extends Component {
+class Signin extends React.Component {
   state = {
     email: "",
     password: "",
@@ -30,13 +29,13 @@ class Signin extends Component {
         const payload = { username: email, password };
         const { data } = await api.signin(payload);
         saveToken(data);
-        axios.defaults.headers.common["authorization"] = `Bearer ${data}`;
         this.props.handleFetchOwnInfo();
         const { from } = this.props.location.state || {
           from: { pathname: "/" }
         };
         this.props.history.push(from.pathname);
       } catch (error) {
+        console.log(error);
         this.setState({ signinError: "Something Went Wrong!" });
       }
     }
@@ -80,7 +79,7 @@ class Signin extends Component {
         </div>
 
         <input type="submit" value="Submit!" />
-        <p style={styles.error}>{signinError}</p>
+        <div style={styles.error}>{signinError}</div>
       </form>
     );
   }

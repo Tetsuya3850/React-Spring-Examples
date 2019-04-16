@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import * as api from "../api";
+import React from "react";
+import * as api from "../../api";
 
-class Signup extends Component {
+class Signup extends React.Component {
   state = {
     email: "",
     password: "",
@@ -88,7 +88,6 @@ class Signup extends Component {
             <span> * </span>
             <span style={styles.error}>{unMatchPwdErr}</span>
           </div>
-
           <input
             name="passwordConfirm"
             type="password"
@@ -99,7 +98,7 @@ class Signup extends Component {
         </div>
 
         <input type="submit" value="Submit!" />
-        <p style={styles.error}>{signupError}</p>
+        <div style={styles.error}>{signupError}</div>
       </form>
     );
   }

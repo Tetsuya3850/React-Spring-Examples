@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { handleFetchUserList } from "../reducers/userListReducer";
-import UserPreview from "./UserPreview";
+import { handleFetchUserList } from "../../reducers/userListReducer";
+import UserPreview from "../parts/UserPreview";
 
 class UserList extends React.Component {
   componentDidMount() {

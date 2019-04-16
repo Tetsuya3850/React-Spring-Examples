@@ -53,9 +53,7 @@ const feed = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: action.error,
-        first: null,
-        last: null
+        error: action.error
       };
     case FETCH_FEED_SUCCESS:
       return {

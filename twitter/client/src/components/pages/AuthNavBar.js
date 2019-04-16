@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { removeToken } from "../tokenUtils";
+import { removeToken } from "../../tokenUtils";
 
 const AuthNavBar = ({ history, authedId }) => (
   <div style={styles.container}>
@@ -30,15 +30,15 @@ const AuthNavBar = ({ history, authedId }) => (
     >
       New
     </NavLink>
-    <div
+    <button
       onClick={() => {
         removeToken();
         history.push("/");
       }}
-      style={{ ...styles.rightNavs, ...styles.logoutBtn }}
+      style={styles.rightNavs}
     >
       Logout
-    </div>
+    </button>
   </div>
 );
 
@@ -57,9 +57,6 @@ const styles = {
   },
   rightNavs: {
     flexGrow: 1
-  },
-  logoutBtn: {
-    cursor: "pointer"
   }
 };
 

@@ -1,17 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
-import { isAuthed } from "../tokenUtils";
 import FollowBtn from "./FollowBtn";
 
-const UserPreview = ({ user, followed, me }) => {
+const UserPreview = ({ user }) => {
   return (
-    <div>
-      <div style={styles.container}>
-        <Link to={`/users/details/${user.id}`}>{user.username}</Link>
-        <FollowBtn me={me} followed={followed} user={user} />
-      </div>
+    <div style={styles.container}>
+      <Link to={`/users/details/${user.id}`}>{user.username}</Link>
+      <FollowBtn userId={user.id} />
     </div>
   );
 };
@@ -26,14 +22,10 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ users, ownInfo }, { userId }) => {
+const mapStateToProps = ({ users }, { userId }) => {
   const user = users[userId] ? users[userId] : {};
-  const followed = ownInfo.followingUserIds.includes(userId);
-  const me = isAuthed() == userId;
   return {
-    user,
-    followed,
-    me
+    user
   };
 };
 

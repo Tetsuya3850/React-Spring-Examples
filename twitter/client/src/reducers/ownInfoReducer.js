@@ -4,6 +4,7 @@ import {
   incrementFollowersCount,
   decrementFollowersCount
 } from "./usersReducer";
+import { addHeartedUser, removeHeartedUser } from "./detailReducer";
 
 const FETCH_OWNINFO = "FETCH_OWNINFO";
 const HEART = "HEART";
@@ -45,21 +46,23 @@ export const handleFetchOwnInfo = () => async dispatch => {
   }
 };
 
-export const handleHeart = tweetId => async dispatch => {
+export const handleHeart = (tweetId, userId) => async dispatch => {
   try {
     await api.toggleHeart(tweetId);
-    dispatch(incrementHeartCount(tweetId));
     dispatch(heart(tweetId));
+    dispatch(incrementHeartCount(tweetId));
+    dispatch(addHeartedUser(userId));
   } catch (error) {
     console.log(error);
   }
 };
 
-export const handleUnheart = tweetId => async dispatch => {
+export const handleUnheart = (tweetId, userId) => async dispatch => {
   try {
     await api.toggleHeart(tweetId);
-    dispatch(decrementHeartCount(tweetId));
     dispatch(unheart(tweetId));
+    dispatch(decrementHeartCount(tweetId));
+    dispatch(removeHeartedUser(userId));
   } catch (error) {
     console.log(error);
   }
@@ -68,8 +71,8 @@ export const handleUnheart = tweetId => async dispatch => {
 export const handleFollow = userId => async dispatch => {
   try {
     await api.toggleFollow(userId);
-    dispatch(incrementFollowersCount(userId));
     dispatch(follow(userId));
+    dispatch(incrementFollowersCount(userId));
   } catch (error) {
     console.log(error);
   }
@@ -78,8 +81,8 @@ export const handleFollow = userId => async dispatch => {
 export const handleUnfollow = userId => async dispatch => {
   try {
     await api.toggleFollow(userId);
-    dispatch(decrementFollowersCount(userId));
     dispatch(unfollow(userId));
+    dispatch(decrementFollowersCount(userId));
   } catch (error) {
     console.log(error);
   }

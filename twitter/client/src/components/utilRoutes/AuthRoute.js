@@ -1,6 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import { isAuthed } from "../tokenUtils";
+import { isAuthed } from "../../tokenUtils";
 
 const AuthRoute = ({
   authComponent: AuthComponent,
@@ -12,7 +12,7 @@ const AuthRoute = ({
     render={props => {
       const authedId = isAuthed();
       return authedId ? (
-        <AuthComponent authedId={authedId} {...props} />
+        <AuthComponent {...props} authedId={authedId} />
       ) : (
         <UnAuthComponent {...props} />
       );

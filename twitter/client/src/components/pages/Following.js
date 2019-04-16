@@ -1,28 +1,31 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as api from "../api";
-import UserPreview from "./UserPreview";
-import { addUsers } from "../reducers/usersReducer";
-import { user } from "../reducers/schema";
+import * as api from "../../api";
+import UserPreview from "../parts/UserPreview";
+import { addUsers } from "../../reducers/usersReducer";
+import { user } from "../../reducers/schema";
 import { normalize } from "normalizr";
 
-class Followers extends React.Component {
+class Following extends React.Component {
   state = {
-    followersByIds: []
+    followingByIds: []
   };
+
   async componentDidMount() {
-    const { data } = await api.getFollowers(this.props.match.params.userId);
+    const { data } = await api.getFollowing(this.props.match.params.userId);
     const normalizedData = normalize(data, [user]);
-    this.setState({ followersByIds: normalizedData.result });
+    this.setState({ followingByIds: normalizedData.result });
     this.props.addUsers(normalizedData.entities.users);
   }
+
   render() {
-    const { followersByIds } = this.state;
+    const { followingByIds } = this.state;
+
     return (
       <div>
-        <div>Followers</div>
-        {followersByIds.map(userId => (
+        <div>Following</div>
+        {followingByIds.map(userId => (
           <UserPreview key={userId} userId={userId} />
         ))}
       </div>
@@ -36,4 +39,4 @@ const mapDispatchToProps = dispatch =>
 export default connect(
   null,
   mapDispatchToProps
-)(Followers);
+)(Following);
