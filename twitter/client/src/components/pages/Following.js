@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as api from "../../api";
-import UserPreview from "../parts/UserPreview";
+import UserPreview from "../atoms/UserPreview";
 import { addUsers } from "../../reducers/usersReducer";
 import { user } from "../../reducers/schema";
 import { normalize } from "normalizr";

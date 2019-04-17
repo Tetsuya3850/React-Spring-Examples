@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as api from "../../api";
-import TweetPreview from "../parts/TweetPreview";
+import TweetPreview from "../atoms/TweetPreview";
 import { addUsers } from "../../reducers/usersReducer";
 import { addTweets } from "../../reducers/tweetsReducer";
 import { tweet } from "../../reducers/schema";

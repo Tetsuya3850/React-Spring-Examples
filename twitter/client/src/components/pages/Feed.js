@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { handleFetchFeed } from "../../reducers/feedReducer";
-import TweetPreview from "../parts/TweetPreview";
+import TweetPreview from "../atoms/TweetPreview";
 
 class Feed extends React.Component {
   componentDidMount() {

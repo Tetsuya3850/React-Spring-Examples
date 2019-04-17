@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { handleGetTweet } from "../../reducers/detailReducer";
-import TweetPreview from "../parts/TweetPreview";
-import UserPreview from "../parts/UserPreview";
+import TweetPreview from "../atoms/TweetPreview";
+import UserPreview from "../atoms/UserPreview";
 
 class TweetDetail extends React.Component {
   componentDidMount() {

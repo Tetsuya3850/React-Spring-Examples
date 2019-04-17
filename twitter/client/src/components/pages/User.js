@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import UserProfile from "../parts/UserProfile";
-import TweetPreview from "../parts/TweetPreview";
+import UserProfile from "../atoms/UserProfile";
+import TweetPreview from "../atoms/TweetPreview";
 import { handleFetchUserFeed } from "../../reducers/userFeedReducer";
 
 class User extends React.Component {
