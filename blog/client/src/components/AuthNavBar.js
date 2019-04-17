@@ -21,15 +21,15 @@ const AuthNavBar = ({ history, authedId }) => (
     >
       New Article
     </NavLink>
-    <div
+    <button
       onClick={() => {
         removeToken();
         history.push("/");
       }}
-      style={{ ...styles.rightNavs, ...styles.logoutBtn }}
+      style={styles.rightNavs}
     >
       Logout
-    </div>
+    </button>
   </div>
 );
 
@@ -48,9 +48,6 @@ const styles = {
   },
   rightNavs: {
     flexGrow: 1
-  },
-  logoutBtn: {
-    cursor: "pointer"
   }
 };
 

@@ -14,10 +14,9 @@ class ArticleDetail extends React.Component {
   }
 
   render() {
-    const { detail, article, authorInfo, history } = this.props;
+    const { detail, article, authorInfo, isOwner, history } = this.props;
     const { isFetching, error } = detail;
     const { id, title, text, created } = article;
-    const isOwner = isAuthed() == article.applicationUser;
 
     if (isFetching) {
       return <div>LOADING...</div>;
@@ -75,10 +74,12 @@ const mapStateToProps = ({ articles, users, detail }, { match }) => {
   const authorInfo = users[article.applicationUser]
     ? users[article.applicationUser]
     : {};
+  const isOwner = isAuthed() === article.applicationUser;
   return {
     detail,
     article,
-    authorInfo
+    authorInfo,
+    isOwner
   };
 };
 

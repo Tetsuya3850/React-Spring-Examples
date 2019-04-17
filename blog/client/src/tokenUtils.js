@@ -19,7 +19,7 @@ export const getTokenInfo = () => {
 export const isAuthed = () => {
   const token_info = getTokenInfo();
   if (token_info && token_info.exp > Math.round(new Date() / 1000)) {
-    return token_info.id;
+    return Number(token_info.id);
   } else {
     return false;
   }
