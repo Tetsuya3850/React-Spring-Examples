@@ -21,6 +21,13 @@ public class Todo {
 
     private String createdAt = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 
+    public Todo() {
+    }
+
+    public Todo(@NotNull @Size(min = 1) String text) {
+        this.text = text;
+    }
+
     public Long getId() {
         return id;
     }

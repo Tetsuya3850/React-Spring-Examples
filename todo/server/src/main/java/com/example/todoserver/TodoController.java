@@ -10,20 +10,20 @@ import java.util.List;
 @RequestMapping("/todos")
 public class TodoController {
     @Autowired
-    private TodoRepository todoRepository;
+    private TodoService todoServie;
 
     @PostMapping("")
     Todo newTodo(@Valid @RequestBody Todo newTodo) {
-        return todoRepository.save(newTodo);
+        return todoServie.newTodo(newTodo);
     }
 
     @GetMapping("")
     List<Todo> getTodos() {
-        return todoRepository.findAll();
+        return todoServie.getTodos();
     }
 
     @DeleteMapping("/{id}")
     void deleteTodo(@PathVariable Long id) {
-        todoRepository.deleteById(id);
+        todoServie.deleteTodo(id);
     }
 }
