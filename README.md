@@ -37,7 +37,6 @@ A collection of basic apps built with React and Spring.
 - [Spring MVC Test Framework Reference](https://docs.spring.io/spring/docs/5.1.6.RELEASE/spring-framework-reference/testing.html#spring-mvc-test-framework)
 - [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
 - [Mockito Javadoc](https://static.javadoc.io/org.mockito/mockito-core/2.27.0/org/mockito/Mockito.html)
-- [From Zero to Hero with Spring Boot - Brian Clozel](https://www.youtube.com/watch?v=aA4tfBGY6jY)
 - [Test Driven Development with Spring Boot - Sannidhi Jalukar, Madhura Bhave](https://www.youtube.com/watch?v=s9vt6UJiHg4&t=2711s)
 - [Testing Spring Boot Applications - Phil Webb](https://www.youtube.com/watch?v=QjaoAWLlGGs)
 - [Spring Tips: Bootiful Testing](https://www.youtube.com/watch?v=lTSJCr7xdbM)
