@@ -25,8 +25,8 @@ A collection of basic apps built with React and Spring.
 - [Complete Intro to React by Brian Holt](https://frontendmasters.com/courses/react/)
 - [Getting Started with Redux by Dan Abramov](https://egghead.io/courses/getting-started-with-redux)
 - [Building React Applications with Idiomatic Redux by Dan Abramov](https://egghead.io/courses/building-react-applications-with-idiomatic-redux)
-
 - [Spring Guides](https://spring.io/guides)
+- [Getting Started with Spring Boot](https://www.youtube.com/watch?v=sbPSjI4tt10)
 - [Spring Boot Reference](https://docs.spring.io/spring-boot/docs/2.1.4.RELEASE/reference/htmlsingle/)
 - [The IoC Container Reference](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html#beans)
 - [Spring Web MVC Reference](https://docs.spring.io/spring/docs/5.1.6.RELEASE/spring-framework-reference/web.html#mvc)
