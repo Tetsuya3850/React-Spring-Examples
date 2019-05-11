@@ -8,6 +8,8 @@ const setAuthHeader = () => ({
   headers: { authorization: `Bearer ${getToken()}` }
 });
 
-export const signup = payload => axios.post(`/users/signup`, payload);
+export const wakeup = () => axios.get();
+export const signup = payload => axios.post(`/persons/signup`, payload);
 export const signin = payload => axios.post(`/login`, payload);
-export const getUser = userId => axios.get(`/users/${userId}`, setAuthHeader());
+export const getUser = userId =>
+  axios.get(`/persons/${userId}`, setAuthHeader());

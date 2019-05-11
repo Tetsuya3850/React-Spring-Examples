@@ -8,8 +8,16 @@ import Home from "./Home";
 import Signup from "./Signup";
 import Signin from "./Signin";
 import User from "./User";
+import * as api from "../api";
 
 class AppContainer extends React.Component {
+  // Solely for waking up Heroku server, please ignore.
+  async componentDidMount() {
+    try {
+      await api.wakeup();
+    } catch (e) {}
+  }
+
   render() {
     return (
       <Router>
