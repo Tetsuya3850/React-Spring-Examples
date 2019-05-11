@@ -1,6 +1,7 @@
 package com.example.todoserver;
 
 public class FormTodo {
+
     private String text;
 
     public FormTodo() {

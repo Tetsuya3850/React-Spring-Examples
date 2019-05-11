@@ -4,27 +4,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotBlank;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 @Entity
 public class Todo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
-    @Size(min=1)
+    @NotBlank
     private String text;
 
-    private String createdAt = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+    private String created = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 
-    public Todo() {
+    protected Todo() {
     }
 
-    public Todo(@NotNull @Size(min = 1) String text) {
+    public Todo(String text) {
         this.text = text;
     }
 
@@ -40,11 +39,7 @@ public class Todo {
         this.text = text;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public String getCreated() {
+        return created;
     }
 }

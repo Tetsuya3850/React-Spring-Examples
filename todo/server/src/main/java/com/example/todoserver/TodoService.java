@@ -2,23 +2,27 @@ package com.example.todoserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class TodoService {
-    @Autowired
-    private TodoRepository todoRepository;
 
-    Todo newTodo(Todo newTodo) {
-        return todoRepository.save(newTodo);
+    private final TodoRepository todoRepository;
+
+    @Autowired
+    public TodoService(TodoRepository todoRepository){
+        this.todoRepository = todoRepository;
     }
 
-    List<Todo> getTodos() {
+    public Todo saveTodo(Todo todo) {
+        return todoRepository.save(todo);
+    }
+
+    public List<Todo> findAllTodos() {
         return todoRepository.findAll();
     }
 
-    void deleteTodo(Long id) {
+    public void deleteTodoById(Long id) {
         todoRepository.deleteById(id);
     }
 }
