@@ -39,11 +39,13 @@ public class TodoServiceTest {
 
     @Test
     public void findAllTodos_CallsRepositoryFindAllOnce_ReturnsTodos(){
-        when(todoRepository.findAll()).thenReturn(Arrays.asList(new Todo(text)));
+        Todo mockTodo = new Todo(text);
+        List<Todo> mockTodos = Arrays.asList(mockTodo);
+        when(todoRepository.findAll()).thenReturn(mockTodos);
 
         List<Todo> todos = todoService.findAllTodos();
 
-        assertEquals(text, todos.get(0).getText());
+        assertEquals(mockTodo, todos.get(0));
         verify(todoRepository, times(1)).findAll();
     }
 

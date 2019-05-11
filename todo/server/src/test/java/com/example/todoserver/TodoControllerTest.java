@@ -39,7 +39,7 @@ public class TodoControllerTest {
     }
 
     @Test
-    public void saveTodo_CallsTodoServiceSaveTodoOnce_WithPassedArgs_ReturnsOKAndTodo() throws Exception {
+    public void saveTodo_CallsServiceSaveTodoOnce_WithPassedArgs_ReturnsOKAndTodo() throws Exception {
         Todo newTodo = new Todo(text);
         when(todoService.saveTodo(any(Todo.class))).thenReturn(newTodo);
 
