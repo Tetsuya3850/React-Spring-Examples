@@ -41,7 +41,7 @@ public class TodoModelTest {
 
     @Test
     public void textIsOnlySpaces() {
-        Todo todo = new Todo( "     ");
+        Todo todo = new Todo( " ");
 
         Set<ConstraintViolation<Todo>> constraintViolations = validator.validate(todo);
 

@@ -27,15 +27,15 @@ public class IntegrationTest {
         assertEquals(HttpStatus.OK, postTodoResponse.getStatusCode());
         assertEquals(text, postTodoResponse.getBody().getText());
 
-        ResponseEntity<Todo[]> getTodosresponse = restTemplate.getForEntity("/todos", Todo[].class);
+        ResponseEntity<Todo[]> getTodosResponse = restTemplate.getForEntity("/todos", Todo[].class);
 
-        assertEquals(HttpStatus.OK, getTodosresponse.getStatusCode());
-        assertEquals(1, getTodosresponse.getBody().length);
+        assertEquals(HttpStatus.OK, getTodosResponse.getStatusCode());
+        assertEquals(1, getTodosResponse.getBody().length);
 
         Long todo_id = postTodoResponse.getBody().getId();
         restTemplate.delete("/todos/{id}", todo_id);
 
-        ResponseEntity<Todo[]> getTodosAfterDeleteresponse = restTemplate.getForEntity("/todos", Todo[].class);
-        assertEquals(0, getTodosAfterDeleteresponse.getBody().length);
+        ResponseEntity<Todo[]> getTodosAfterDeleteResponse = restTemplate.getForEntity("/todos", Todo[].class);
+        assertEquals(0, getTodosAfterDeleteResponse.getBody().length);
     }
 }

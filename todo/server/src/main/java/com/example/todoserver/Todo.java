@@ -20,7 +20,7 @@ public class Todo {
 
     private String created = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 
-    protected Todo() {
+    public Todo() {
     }
 
     public Todo(String text) {
