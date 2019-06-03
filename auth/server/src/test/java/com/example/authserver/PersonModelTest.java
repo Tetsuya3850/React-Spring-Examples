@@ -6,13 +6,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.Iterator;
 import java.util.Set;
+
 import static org.junit.Assert.assertEquals;
 
 public class PersonModelTest {
 
     private static Validator validator;
+
+    private final String username = "me@gmail.com";
+    private final String password = "Test3850";
 
     @BeforeClass
     public static void setUp() {
@@ -22,7 +25,7 @@ public class PersonModelTest {
 
     @Test
     public void usernameIsNull() {
-        Person person = new Person(null, TestConstants.password);
+        Person person = new Person(null, password);
 
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
 
@@ -32,7 +35,7 @@ public class PersonModelTest {
 
     @Test
     public void usernameIsEmptyString() {
-        Person person = new Person("", TestConstants.password);
+        Person person = new Person("", password);
 
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
 
@@ -42,19 +45,16 @@ public class PersonModelTest {
 
     @Test
     public void usernameIsOnlySpaces() {
-        Person person = new Person("    ", TestConstants.password);
+        Person person = new Person(" ", password);
 
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
-        Iterator<ConstraintViolation<Person>> constraintViolationsIterator = constraintViolations.iterator();
 
         assertEquals(2, constraintViolations.size());
-        assertEquals("must not be blank", constraintViolationsIterator.next().getMessage());
-        assertEquals("must be a well-formed email address", constraintViolationsIterator.next().getMessage());
     }
 
     @Test
     public void usernameIsNotEmail() {
-        Person person = new Person("me", TestConstants.password);
+        Person person = new Person("me", password);
 
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
 
@@ -64,7 +64,7 @@ public class PersonModelTest {
 
     @Test
     public void passwordIsNull() {
-        Person person = new Person(TestConstants.username, null);
+        Person person = new Person(username, null);
 
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
 
@@ -74,7 +74,7 @@ public class PersonModelTest {
 
     @Test
     public void passwordIsShorterThen8() {
-        Person person = new Person(TestConstants.username, "1234567");
+        Person person = new Person(username, TestUtils.dummyStringWithSpecifiedLength(7));
 
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
 
@@ -84,7 +84,7 @@ public class PersonModelTest {
 
     @Test
     public void personIsValid() {
-        Person person = new Person(TestConstants.username, TestConstants.password);
+        Person person = new Person(username, password);
 
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
 

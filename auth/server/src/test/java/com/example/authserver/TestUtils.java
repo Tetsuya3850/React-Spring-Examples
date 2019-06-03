@@ -3,6 +3,8 @@ package com.example.authserver;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Base64;
+
+import java.util.Arrays;
 import java.util.Map;
 
 public class TestUtils {
@@ -33,5 +35,10 @@ public class TestUtils {
         return jsonPayload;
     }
 
+    public static String dummyStringWithSpecifiedLength(int length){
+        char[] chars = new char[length];
+        Arrays.fill(chars, '*');
+        return new String(chars);
+    }
 
 }

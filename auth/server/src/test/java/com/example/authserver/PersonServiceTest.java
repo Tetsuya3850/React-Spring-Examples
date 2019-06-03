@@ -24,6 +24,10 @@ public class PersonServiceTest {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final String username = "me@gmail.com";
+    private final String password = "Test3850";
+    private final Long id = 1L;
+
     class IsPersonWithBCryptEncodedPassword implements ArgumentMatcher<Person> {
         private Pattern BCRYPT_PATTERN = Pattern
                 .compile("\\A\\$2(a|y|b)?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
@@ -33,7 +37,6 @@ public class PersonServiceTest {
         }
     }
 
-
     @Before
     public void setup(){
         bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -42,33 +45,30 @@ public class PersonServiceTest {
 
     @Test
     public void savePerson_EncodesPassword_CallsRepositorySaveOnce_WithPassedArgs_ReturnsPerson(){
-        Person mockPerson = new Person(TestConstants.username, TestConstants.password);
-        Person passwordEncodedMockPerson = new Person(TestConstants.username, TestConstants.password);
-        passwordEncodedMockPerson.setPassword(bCryptPasswordEncoder.encode(passwordEncodedMockPerson.getPassword()));
-        when(personRepository.save(argThat(new IsPersonWithBCryptEncodedPassword()))).thenReturn(passwordEncodedMockPerson);
+        Person mockPerson = new Person(username, password);
+        when(personRepository.save(argThat(new IsPersonWithBCryptEncodedPassword()))).thenReturn(mockPerson);
 
         Person person = personService.savePerson(mockPerson);
 
-        assertEquals(passwordEncodedMockPerson, person);
+        assertEquals(username, person.getUsername());
         verify(personRepository, times(1)).save(mockPerson);
     }
 
     @Test(expected = PersonNotFoundException.class)
     public void findPersonById_WithInvalidId_ThrowsException(){
-        doThrow(new PersonNotFoundException(TestConstants.id)).when(personRepository).findById(TestConstants.id);
+        doThrow(new PersonNotFoundException(id)).when(personRepository).findById(id);
 
-        personService.findPersonById(TestConstants.id);
+        personService.findPersonById(id);
     }
 
     @Test
     public void findPersonById_CallsRepositoryFindByIdOnce_WithPassedArgs_ReturnsPerson(){
-        Person mockPerson = new Person(TestConstants.username, TestConstants.password);
-        when(personRepository.findById(TestConstants.id)).thenReturn(Optional.of(mockPerson));
+        Person mockPerson = new Person(username, password);
+        when(personRepository.findById(id)).thenReturn(Optional.of(mockPerson));
 
-        Person person = personService.findPersonById(TestConstants.id);
+        Person person = personService.findPersonById(id);
 
         assertEquals(mockPerson, person);
-        verify(personRepository, times(1)).findById(TestConstants.id);
+        verify(personRepository, times(1)).findById(id);
     }
-
 }

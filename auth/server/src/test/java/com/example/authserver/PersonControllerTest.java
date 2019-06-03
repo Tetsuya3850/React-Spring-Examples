@@ -1,16 +1,22 @@
 package com.example.authserver;
 
+import com.auth0.jwt.JWT;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.util.NestedServletException;
+
+import java.util.Date;
+
+import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
+import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,9 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(PersonController.class)
-@AutoConfigureMockMvc(secure = false)
-@ActiveProfiles("test")
+@SpringBootTest
+@AutoConfigureMockMvc
 public class PersonControllerTest {
 
     @Autowired
@@ -33,6 +38,10 @@ public class PersonControllerTest {
     @MockBean
     private UserDetailsServiceImpl userDetailsService;
 
+    private final String username = "me@gmail.com";
+    private final String password = "Test3850";
+    private final Long id = 1L;
+
     @Test
     public void savePerson_WithInvalidPerson_ReturnsBadRequest() throws Exception {
         mockMvc.perform(post("/persons/signup")
@@ -42,15 +51,15 @@ public class PersonControllerTest {
     }
 
     @Test
-    public void savePerson_CallsServiceSavePersonOnce_WithPassedArgs_ReturnsOKAndPersonWithoutPassword() throws Exception {
-        Person newPerson = new Person(TestConstants.username, TestConstants.password);
+    public void savePerson_CallsServiceSavePersonOnce_WithPassedArgs_ReturnsOKAndPerson_WithoutPassword() throws Exception {
+        Person newPerson = new Person(username, password);
         when(personService.savePerson(any(Person.class))).thenReturn(newPerson);
 
         mockMvc.perform(post("/persons/signup")
-                .content(TestUtils.asJsonString(new FormPerson(TestConstants.username, TestConstants.password)))
+                .content(TestUtils.asJsonString(new FormPerson(username, password)))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value(TestConstants.username))
+                .andExpect(jsonPath("$.username").value(username))
                 .andExpect(jsonPath("$.password").doesNotExist());
 
         verify(personService, times(1)).savePerson(any(Person.class));
@@ -58,21 +67,34 @@ public class PersonControllerTest {
 
     @Test(expected = NestedServletException.class)
     public void findPersonById_WithInvalidId_ThrowsException() throws Exception {
-        Long id = 1L;
+        when(userDetailsService.loadUserByUsername(username)).thenReturn(new User(username, password, emptyList()));
         doThrow(new IllegalArgumentException()).when(personService).findPersonById(id);
 
-        mockMvc.perform(get("/persons/{id}", id));
+        String token = JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                .withClaim("id", Long.toString(id))
+                .sign(HMAC512(SecurityConstants.JWT_SECRET.getBytes()));
+
+        mockMvc.perform(get("/persons/{id}", id).header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token));
     }
 
     @Test
     public void findPersonById_CallsServiceFindPersonByIdOnce_ReturnsOKAndPersonWithoutPassword() throws Exception {
-        Long id = 1L;
-        Person newPerson = new Person(TestConstants.username, TestConstants.password);
+        when(userDetailsService.loadUserByUsername(username)).thenReturn(new User(username, password, emptyList()));
+        Person newPerson = new Person(username, password);
         when(personService.findPersonById(id)).thenReturn(newPerson);
 
-        mockMvc.perform(get("/persons/{id}", id))
+        String token = JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                .withClaim("id", Long.toString(id))
+                .sign(HMAC512(SecurityConstants.JWT_SECRET.getBytes()));
+
+        mockMvc.perform(get("/persons/{id}", id)
+                .header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value(TestConstants.username))
+                .andExpect(jsonPath("$.username").value(username))
                 .andExpect(jsonPath("$.password").doesNotExist());
 
         verify(personService, times(1)).findPersonById(id);

@@ -19,31 +19,33 @@ public class IntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private final String username = "me@gmail.com";
+    private final String password = "Test3850";
+
     @Test
     public void test(){
-        FormPerson formPerson = new FormPerson(TestConstants.username, TestConstants.password);
+        FormPerson formPerson = new FormPerson(username, password);
         ResponseEntity<Person> signupResponse = restTemplate.postForEntity("/persons/signup", formPerson, Person.class);
         assertEquals(HttpStatus.OK, signupResponse.getStatusCode());
-        assertEquals(TestConstants.username, signupResponse.getBody().getUsername());
+        assertEquals(username, signupResponse.getBody().getUsername());
         assertNull(signupResponse.getBody().getPassword());
 
         ResponseEntity<String> loginResponse = restTemplate.postForEntity("/login", formPerson, String.class);
         assertEquals(HttpStatus.OK, loginResponse.getStatusCode());
         String token = loginResponse.getBody();
         Map jsonPayload = TestUtils.decodeJWTPayload(token);
-        assertEquals(jsonPayload.get("sub"), TestConstants.username);
+        assertEquals(jsonPayload.get("sub"), username);
 
         String id = String.valueOf(jsonPayload.get("id"));
         ResponseEntity<Person> getPersonByIdWithoutJWTResponse = restTemplate.exchange("/persons/{id}", HttpMethod.GET, null, Person.class, id);
         assertEquals(HttpStatus.FORBIDDEN, getPersonByIdWithoutJWTResponse.getStatusCode());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<Person> getPersonByIdWithJWTResponse = restTemplate.exchange("/persons/{id}", HttpMethod.GET, entity, Person.class, id);
         assertEquals(HttpStatus.OK, getPersonByIdWithJWTResponse.getStatusCode());
-        assertEquals(TestConstants.username, getPersonByIdWithJWTResponse.getBody().getUsername());
+        assertEquals(username, getPersonByIdWithJWTResponse.getBody().getUsername());
         assertNull(getPersonByIdWithJWTResponse.getBody().getPassword());
     }
 }

@@ -20,11 +20,11 @@ public class Person {
     private String username;
 
     @NotNull
-    @Size(min=8)
+    @Size(min = 8)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    protected Person() {
+    public Person() {
     }
 
     public Person(String username, String password) {

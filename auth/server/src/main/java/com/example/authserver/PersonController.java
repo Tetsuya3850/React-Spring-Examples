@@ -1,5 +1,6 @@
 package com.example.authserver;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -10,6 +11,7 @@ public class PersonController {
 
     private final PersonService personService;
 
+    @Autowired
     public PersonController(PersonService personService){
         this.personService = personService;
     }
@@ -20,7 +22,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    Person getPerson(@PathVariable Long id) {
+    Person findPerson(@PathVariable Long id) {
         return personService.findPersonById(id);
     }
 }

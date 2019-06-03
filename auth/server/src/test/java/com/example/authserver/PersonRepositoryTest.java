@@ -20,29 +20,31 @@ public class PersonRepositoryTest {
     @Autowired
     private TestEntityManager testEntityManager;
 
+    private final String username = "me@gmail.com";
+    private final String password = "Test3850";
+
     @Test(expected = PersistenceException.class)
     public void duplicateEmail_ThrowsException() {
-        testEntityManager.persistAndFlush(new Person(TestConstants.username, TestConstants.password));
-        testEntityManager.persistAndFlush(new Person(TestConstants.username, TestConstants.password));
+        testEntityManager.persistAndFlush(new Person(username, password));
+        testEntityManager.persistAndFlush(new Person(username, password));
     }
 
     @Test(expected = UsernameNotFoundException.class)
     public void findByUsername_WithNonExistentUsername_ThrowsException() {
-        testEntityManager.persistAndFlush(new Person(TestConstants.username, TestConstants.password));
+        testEntityManager.persistAndFlush(new Person(username, password));
         String nonExistUsername = "NONEXISTUSERNAME";
-        Person person = personRepository
+        personRepository
                 .findByUsername(nonExistUsername)
                 .orElseThrow(() -> new UsernameNotFoundException(nonExistUsername));
-        assertEquals(null, person);
     }
 
     @Test
     public void findByUsername_ReturnsUser() throws Exception {
-        testEntityManager.persistAndFlush(new Person(TestConstants.username, TestConstants.password));
+        testEntityManager.persistAndFlush(new Person(username, password));
         Person person = personRepository
-                .findByUsername(TestConstants.username)
-                .orElseThrow(() -> new UsernameNotFoundException(TestConstants.username));
-        assertEquals(TestConstants.username, person.getUsername());
+                .findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+        assertEquals(username, person.getUsername());
     }
 
 }
