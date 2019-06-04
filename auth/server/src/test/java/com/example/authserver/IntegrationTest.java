@@ -11,6 +11,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static com.example.authserver.TestConstants.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -19,22 +20,19 @@ public class IntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final String username = "me@gmail.com";
-    private final String password = "Test3850";
-
     @Test
     public void test(){
-        FormPerson formPerson = new FormPerson(username, password);
+        FormPerson formPerson = new FormPerson(USERNAME, PASSWORD);
         ResponseEntity<Person> signupResponse = restTemplate.postForEntity("/persons/signup", formPerson, Person.class);
         assertEquals(HttpStatus.OK, signupResponse.getStatusCode());
-        assertEquals(username, signupResponse.getBody().getUsername());
+        assertEquals(USERNAME, signupResponse.getBody().getUsername());
         assertNull(signupResponse.getBody().getPassword());
 
         ResponseEntity<String> loginResponse = restTemplate.postForEntity("/login", formPerson, String.class);
         assertEquals(HttpStatus.OK, loginResponse.getStatusCode());
         String token = loginResponse.getBody();
         Map jsonPayload = TestUtils.decodeJWTPayload(token);
-        assertEquals(jsonPayload.get("sub"), username);
+        assertEquals(jsonPayload.get("sub"), USERNAME);
 
         String id = String.valueOf(jsonPayload.get("id"));
         ResponseEntity<Person> getPersonByIdWithoutJWTResponse = restTemplate.exchange("/persons/{id}", HttpMethod.GET, null, Person.class, id);
@@ -45,7 +43,7 @@ public class IntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<Person> getPersonByIdWithJWTResponse = restTemplate.exchange("/persons/{id}", HttpMethod.GET, entity, Person.class, id);
         assertEquals(HttpStatus.OK, getPersonByIdWithJWTResponse.getStatusCode());
-        assertEquals(username, getPersonByIdWithJWTResponse.getBody().getUsername());
+        assertEquals(USERNAME, getPersonByIdWithJWTResponse.getBody().getUsername());
         assertNull(getPersonByIdWithJWTResponse.getBody().getPassword());
     }
 }

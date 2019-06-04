@@ -20,8 +20,8 @@ public class PersonService {
         return personRepository.save(person);
     }
 
-    public Person findPersonById(Long id) {
-        return personRepository.findById(id)
-                .orElseThrow(() -> new PersonNotFoundException(id));
+    public Person findPersonById(Long personId) {
+        return personRepository.findById(personId)
+                .orElseThrow(() -> new PersonNotFoundException(personId));
     }
 }

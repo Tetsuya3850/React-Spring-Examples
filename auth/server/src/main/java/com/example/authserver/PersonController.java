@@ -21,8 +21,8 @@ public class PersonController {
         return personService.savePerson(person);
     }
 
-    @GetMapping("/{id}")
-    Person findPerson(@PathVariable Long id) {
-        return personService.findPersonById(id);
+    @GetMapping("/{personId}")
+    Person findPerson(@PathVariable Long personId) {
+        return personService.findPersonById(personId);
     }
 }

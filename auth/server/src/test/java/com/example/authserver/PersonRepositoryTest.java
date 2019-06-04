@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 import javax.persistence.PersistenceException;
 import static org.junit.Assert.assertEquals;
+import static com.example.authserver.TestConstants.*;
 
 @DataJpaTest
 @RunWith(SpringRunner.class)
@@ -20,18 +21,15 @@ public class PersonRepositoryTest {
     @Autowired
     private TestEntityManager testEntityManager;
 
-    private final String username = "me@gmail.com";
-    private final String password = "Test3850";
-
     @Test(expected = PersistenceException.class)
     public void duplicateEmail_ThrowsException() {
-        testEntityManager.persistAndFlush(new Person(username, password));
-        testEntityManager.persistAndFlush(new Person(username, password));
+        testEntityManager.persistAndFlush(new Person(USERNAME, PASSWORD));
+        testEntityManager.persistAndFlush(new Person(USERNAME, PASSWORD));
     }
 
     @Test(expected = UsernameNotFoundException.class)
     public void findByUsername_WithNonExistentUsername_ThrowsException() {
-        testEntityManager.persistAndFlush(new Person(username, password));
+        testEntityManager.persistAndFlush(new Person(USERNAME, PASSWORD));
         String nonExistUsername = "NONEXISTUSERNAME";
         personRepository
                 .findByUsername(nonExistUsername)
@@ -40,11 +38,11 @@ public class PersonRepositoryTest {
 
     @Test
     public void findByUsername_ReturnsUser() throws Exception {
-        testEntityManager.persistAndFlush(new Person(username, password));
+        testEntityManager.persistAndFlush(new Person(USERNAME, PASSWORD));
         Person person = personRepository
-                .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-        assertEquals(username, person.getUsername());
+                .findByUsername(USERNAME)
+                .orElseThrow(() -> new UsernameNotFoundException(USERNAME));
+        assertEquals(USERNAME, person.getUsername());
     }
 
 }
