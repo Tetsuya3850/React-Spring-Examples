@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
+import static com.example.todoserver.TestConstants.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TodoServiceTest {
@@ -18,8 +19,6 @@ public class TodoServiceTest {
 
     private TodoService todoService;
 
-    private String text = "run";
-
     @Before
     public void setup(){
         todoService = new TodoService(todoRepository);
@@ -27,7 +26,7 @@ public class TodoServiceTest {
 
     @Test
     public void saveTodo_CallsRepositorySaveOnce_WithPassedArgs_ReturnsTodo(){
-        Todo mockTodo = new Todo(text);
+        Todo mockTodo = new Todo(TEXT);
         when(todoRepository.save(mockTodo)).thenReturn(mockTodo);
 
         Todo todo = todoService.saveTodo(mockTodo);
@@ -38,7 +37,7 @@ public class TodoServiceTest {
 
     @Test
     public void findAllTodos_CallsRepositoryFindAllOnce_ReturnsTodos(){
-        Todo mockTodo = new Todo(text);
+        Todo mockTodo = new Todo(TEXT);
         List<Todo> mockTodos = Arrays.asList(mockTodo);
         when(todoRepository.findAll()).thenReturn(mockTodos);
 

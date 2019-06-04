@@ -14,7 +14,7 @@ public class TodoModelTest {
     private static Validator validator;
 
     @BeforeClass
-    public static void setUp() {
+    public static void setup() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }

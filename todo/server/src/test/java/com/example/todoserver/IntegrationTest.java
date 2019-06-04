@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static com.example.todoserver.TestConstants.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -20,12 +21,11 @@ public class IntegrationTest {
 
     @Test
     public void test(){
-        String text = "run";
-        FormTodo formTodo = new FormTodo(text);
+        FormTodo formTodo = new FormTodo(TEXT);
         ResponseEntity<Todo> postTodoResponse = restTemplate.postForEntity("/todos", formTodo, Todo.class);
 
         assertEquals(HttpStatus.OK, postTodoResponse.getStatusCode());
-        assertEquals(text, postTodoResponse.getBody().getText());
+        assertEquals(TEXT, postTodoResponse.getBody().getText());
 
         ResponseEntity<Todo[]> getTodosResponse = restTemplate.getForEntity("/todos", Todo[].class);
 

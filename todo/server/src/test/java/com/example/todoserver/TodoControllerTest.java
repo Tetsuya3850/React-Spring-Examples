@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static com.example.todoserver.TestConstants.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TodoController.class)
@@ -28,8 +29,6 @@ public class TodoControllerTest {
     @MockBean
     private TodoService todoService;
 
-    private String text = "run";
-
     @Test
     public void saveTodo_WithInvalidText_ReturnsBadRequest() throws Exception {
         mockMvc.perform(post("/todos")
@@ -40,25 +39,25 @@ public class TodoControllerTest {
 
     @Test
     public void saveTodo_CallsServiceSaveTodoOnce_WithPassedArgs_ReturnsOKAndTodo() throws Exception {
-        Todo newTodo = new Todo(text);
+        Todo newTodo = new Todo(TEXT);
         when(todoService.saveTodo(any(Todo.class))).thenReturn(newTodo);
 
         mockMvc.perform(post("/todos")
-                .content(TestUtils.asJsonString(new FormTodo(text)))
+                .content(TestUtils.asJsonString(new FormTodo(TEXT)))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.text").value(text));
+                .andExpect(jsonPath("$.text").value(TEXT));
 
         verify(todoService, times(1)).saveTodo(any(Todo.class));
     }
 
     @Test
     public void findAllTodos_CallsServiceFindAllTodosOnce_ReturnsOKAndTodos() throws Exception {
-        when(todoService.findAllTodos()).thenReturn(Arrays.asList(new Todo(text)));
+        when(todoService.findAllTodos()).thenReturn(Arrays.asList(new Todo(TEXT)));
 
         mockMvc.perform(get("/todos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].text").value(text));
+                .andExpect(jsonPath("$[0].text").value(TEXT));
 
         verify(todoService, times(1)).findAllTodos();
     }
