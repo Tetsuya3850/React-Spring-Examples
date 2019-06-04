@@ -22,7 +22,7 @@ public class PersonController {
     }
 
     @GetMapping("/{personId}")
-    Person findPerson(@PathVariable Long personId) {
+    Person findPersonById(@PathVariable Long personId) {
         return personService.findPersonById(personId);
     }
 }

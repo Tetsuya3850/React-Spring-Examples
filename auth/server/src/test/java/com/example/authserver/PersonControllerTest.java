@@ -65,36 +65,36 @@ public class PersonControllerTest {
     @Test(expected = NestedServletException.class)
     public void findPersonById_WithInvalidId_ThrowsException() throws Exception {
         when(userDetailsService.loadUserByUsername(USERNAME)).thenReturn(new User(USERNAME, PASSWORD, emptyList()));
-        doThrow(new IllegalArgumentException()).when(personService).findPersonById(ID);
+        doThrow(new IllegalArgumentException()).when(personService).findPersonById(PERSON_ID);
 
         String token = JWT.create()
                 .withSubject(USERNAME)
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .withClaim("id", Long.toString(ID))
+                .withClaim("id", Long.toString(PERSON_ID))
                 .sign(HMAC512(SecurityConstants.JWT_SECRET.getBytes()));
 
-        mockMvc.perform(get("/persons/{id}", ID).header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token));
+        mockMvc.perform(get("/persons/{personId}", PERSON_ID).header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token));
     }
 
     @Test
     public void findPersonById_CallsServiceFindPersonByIdOnce_ReturnsOKAndPersonWithoutPassword() throws Exception {
         when(userDetailsService.loadUserByUsername(USERNAME)).thenReturn(new User(USERNAME, PASSWORD, emptyList()));
         Person newPerson = new Person(USERNAME, PASSWORD);
-        when(personService.findPersonById(ID)).thenReturn(newPerson);
+        when(personService.findPersonById(PERSON_ID)).thenReturn(newPerson);
 
         String token = JWT.create()
                 .withSubject(USERNAME)
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .withClaim("id", Long.toString(ID))
+                .withClaim("id", Long.toString(PERSON_ID))
                 .sign(HMAC512(SecurityConstants.JWT_SECRET.getBytes()));
 
-        mockMvc.perform(get("/persons/{id}", ID)
+        mockMvc.perform(get("/persons/{personId}", PERSON_ID)
                 .header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value(USERNAME))
                 .andExpect(jsonPath("$.password").doesNotExist());
 
-        verify(personService, times(1)).findPersonById(ID);
+        verify(personService, times(1)).findPersonById(PERSON_ID);
     }
 
 }

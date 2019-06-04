@@ -53,19 +53,19 @@ public class PersonServiceTest {
 
     @Test(expected = PersonNotFoundException.class)
     public void findPersonById_WithInvalidId_ThrowsException(){
-        doThrow(new PersonNotFoundException(ID)).when(personRepository).findById(ID);
+        doThrow(new PersonNotFoundException(PERSON_ID)).when(personRepository).findById(PERSON_ID);
 
-        personService.findPersonById(ID);
+        personService.findPersonById(PERSON_ID);
     }
 
     @Test
     public void findPersonById_CallsRepositoryFindByIdOnce_WithPassedArgs_ReturnsPerson(){
         Person mockPerson = new Person(USERNAME, PASSWORD);
-        when(personRepository.findById(ID)).thenReturn(Optional.of(mockPerson));
+        when(personRepository.findById(PERSON_ID)).thenReturn(Optional.of(mockPerson));
 
-        Person person = personService.findPersonById(ID);
+        Person person = personService.findPersonById(PERSON_ID);
 
         assertEquals(mockPerson, person);
-        verify(personRepository, times(1)).findById(ID);
+        verify(personRepository, times(1)).findById(PERSON_ID);
     }
 }

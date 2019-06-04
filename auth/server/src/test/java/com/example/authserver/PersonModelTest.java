@@ -16,7 +16,7 @@ public class PersonModelTest {
     private static Validator validator;
 
     @BeforeClass
-    public static void setUp() {
+    public static void setup() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
