@@ -3,5 +3,5 @@ import { schema } from "normalizr";
 const user = new schema.Entity("users");
 
 export const article = new schema.Entity("articles", {
-  applicationUser: user
+  person: user
 });

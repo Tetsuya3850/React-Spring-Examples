@@ -11,7 +11,7 @@ const ArticlePreview = ({ article, authorInfo }) => (
       </Link>
       <div>
         <span>by </span>
-        <Link to={`/users/${article.applicationUser}`}>
+        <Link to={`/users/${article.person}`}>
           {_.truncate(authorInfo.username, { length: 15 })}
         </Link>
       </div>
@@ -31,9 +31,7 @@ const styles = {
 
 const mapStateToProps = ({ articles, users }, { articleId }) => {
   const article = articles[articleId] ? articles[articleId] : {};
-  const authorInfo = users[article.applicationUser]
-    ? users[article.applicationUser]
-    : {};
+  const authorInfo = users[article.person] ? users[article.person] : {};
   return {
     article,
     authorInfo

@@ -8,16 +8,19 @@ const setAuthHeader = () => ({
   headers: { authorization: `Bearer ${getToken()}` }
 });
 
-export const signup = payload => axios.post(`/users/signup`, payload);
+export const wakeup = () => axios.get("");
+
+export const signup = payload => axios.post(`/persons/signup`, payload);
 export const signin = payload => axios.post(`/login`, payload);
-export const getUser = userId => axios.get(`/users/${userId}`, setAuthHeader());
+export const getUser = personId =>
+  axios.get(`/persons/${personId}`, setAuthHeader());
 
 export const addArticle = payload =>
   axios.post(`/articles`, payload, setAuthHeader());
 export const getFeed = page =>
   axios.get(`/articles/?page=${page}`, setAuthHeader());
-export const getUserFeed = userId =>
-  axios.get(`/articles/users/${userId}`, setAuthHeader());
+export const getUserFeed = personId =>
+  axios.get(`/articles/persons/${personId}`, setAuthHeader());
 export const getArticle = articleId =>
   axios.get(`/articles/${articleId}`, setAuthHeader());
 export const editArticle = (articleId, payload) =>

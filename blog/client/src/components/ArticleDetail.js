@@ -49,9 +49,7 @@ class ArticleDetail extends React.Component {
           <span>by </span>
           <Link to={`/users/${authorInfo.id}`}>{authorInfo.username}</Link>
         </div>
-        <div>
-          on {moment(created, "yyyymmddhhmmss.sss").format("MMMM Do YYYY")}
-        </div>
+        <div>on {moment(created).format("LLL")}</div>
         <p>{text}</p>
       </div>
     );
@@ -71,10 +69,8 @@ const mapStateToProps = ({ articles, users, detail }, { match }) => {
   const article = articles[match.params.articleId]
     ? articles[match.params.articleId]
     : {};
-  const authorInfo = users[article.applicationUser]
-    ? users[article.applicationUser]
-    : {};
-  const isOwner = isAuthed() === article.applicationUser;
+  const authorInfo = users[article.person] ? users[article.person] : {};
+  const isOwner = isAuthed() === article.person;
   return {
     detail,
     article,

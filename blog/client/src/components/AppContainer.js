@@ -12,8 +12,16 @@ import NewArticle from "./NewArticle";
 import User from "./User";
 import ArticleDetail from "./ArticleDetail";
 import EditArticle from "./EditArticle";
+import * as api from "../api";
 
 class AppContainer extends React.Component {
+  // Solely for waking up Heroku server, please ignore.
+  async componentDidMount() {
+    try {
+      await api.wakeup();
+    } catch (e) {}
+  }
+
   render() {
     return (
       <Router>
