@@ -5,7 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import java.util.Arrays;
+
+import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -25,8 +26,8 @@ public class TodoServiceTest {
     }
 
     @Test
-    public void saveTodo_CallsRepositorySaveOnce_WithPassedArgs_ReturnsTodo(){
-        Todo mockTodo = new Todo(TEXT);
+    public void saveTodo_Success(){
+        Todo mockTodo = new Todo(TODO_TEXT);
         when(todoRepository.save(mockTodo)).thenReturn(mockTodo);
 
         Todo todo = todoService.saveTodo(mockTodo);
@@ -36,33 +37,30 @@ public class TodoServiceTest {
     }
 
     @Test
-    public void findAllTodos_CallsRepositoryFindAllOnce_ReturnsTodos(){
-        Todo mockTodo = new Todo(TEXT);
-        List<Todo> mockTodos = Arrays.asList(mockTodo);
-        when(todoRepository.findAll()).thenReturn(mockTodos);
+    public void findAllTodos_Success(){
+        List<Todo> mockTodoList = new ArrayList<>();
+        when(todoRepository.findAll()).thenReturn(mockTodoList);
 
-        List<Todo> todos = todoService.findAllTodos();
+        List<Todo> todoList = todoService.findAllTodos();
 
-        assertEquals(mockTodo, todos.get(0));
+        assertEquals(mockTodoList, todoList);
         verify(todoRepository, times(1)).findAll();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void deleteTodoById_WithInvalidId_ThrowsException(){
-        Long id = 1L;
-        doThrow(new IllegalArgumentException()).when(todoRepository).deleteById(id);
+        doThrow(new IllegalArgumentException()).when(todoRepository).deleteById(TODO_ID);
 
-        todoService.deleteTodoById(id);
+        todoService.deleteTodoById(TODO_ID);
     }
 
     @Test
-    public void deleteTodoById_CallsRepositoryDeleteByIdOnce_WithPassedArgs(){
-        Long id = 1L;
-        doNothing().when(todoRepository).deleteById(id);
+    public void deleteTodoById_Success(){
+        doNothing().when(todoRepository).deleteById(TODO_ID);
 
-        todoService.deleteTodoById(id);
+        todoService.deleteTodoById(TODO_ID);
 
-        verify(todoRepository, times(1)).deleteById(id);
+        verify(todoRepository, times(1)).deleteById(TODO_ID);
     }
 
 }

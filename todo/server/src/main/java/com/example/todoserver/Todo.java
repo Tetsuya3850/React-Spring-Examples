@@ -1,12 +1,13 @@
 package com.example.todoserver;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.sql.Timestamp;
 
 @Entity
 public class Todo {
@@ -18,7 +19,8 @@ public class Todo {
     @NotBlank
     private String text;
 
-    private String created = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+    @CreationTimestamp
+    private Timestamp created;
 
     public Todo() {
     }
@@ -39,7 +41,17 @@ public class Todo {
         this.text = text;
     }
 
-    public String getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
+
+    @Override
+    public String toString() {
+        return "Todo{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", created=" + created +
+                '}';
+    }
+
 }

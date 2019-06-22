@@ -17,17 +17,17 @@ public class TodoController {
     }
 
     @PostMapping("")
-    public Todo saveTodo(@Valid @RequestBody Todo todo) {
-        return todoService.saveTodo(todo);
+    Todo saveTodo(@Valid @RequestBody Todo newTodo) {
+        return todoService.saveTodo(newTodo);
     }
 
     @GetMapping("")
-    public List<Todo> findAllTodos() {
+    List<Todo> findAllTodos() {
         return todoService.findAllTodos();
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTodoById(@PathVariable Long id) {
-        todoService.deleteTodoById(id);
+    @DeleteMapping("/{todoId}")
+    void deleteTodoById(@PathVariable Long todoId) {
+        todoService.deleteTodoById(todoId);
     }
 }

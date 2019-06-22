@@ -7,6 +7,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
+
+import static com.example.todoserver.TestConstants.*;
 import static org.junit.Assert.assertEquals;
 
 public class TodoModelTest {
@@ -20,7 +22,7 @@ public class TodoModelTest {
     }
 
     @Test
-    public void textIsNull() {
+    public void invalidWhen_TextIsNull() {
         Todo todo = new Todo( null);
 
         Set<ConstraintViolation<Todo>> constraintViolations = validator.validate(todo);
@@ -30,7 +32,7 @@ public class TodoModelTest {
     }
 
     @Test
-    public void textIsEmptyString() {
+    public void invalidWhen_TextIsEmptyString() {
         Todo todo = new Todo( "");
 
         Set<ConstraintViolation<Todo>> constraintViolations = validator.validate(todo);
@@ -40,7 +42,7 @@ public class TodoModelTest {
     }
 
     @Test
-    public void textIsOnlySpaces() {
+    public void invalidWhen_TextIsOnlySpaces() {
         Todo todo = new Todo( " ");
 
         Set<ConstraintViolation<Todo>> constraintViolations = validator.validate(todo);
@@ -50,8 +52,8 @@ public class TodoModelTest {
     }
 
     @Test
-    public void todoIsValid() {
-        Todo todo = new Todo( "run");
+    public void valid() {
+        Todo todo = new Todo(TODO_TEXT);
 
         Set<ConstraintViolation<Todo>> constraintViolations = validator.validate(todo);
 

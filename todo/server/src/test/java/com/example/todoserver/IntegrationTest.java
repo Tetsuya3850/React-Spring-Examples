@@ -20,21 +20,21 @@ public class IntegrationTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void test(){
-        FormTodo formTodo = new FormTodo(TEXT);
+    public void test() {
+        // saveTodo Success
+        FormTodo formTodo = new FormTodo(TODO_TEXT);
         ResponseEntity<Todo> postTodoResponse = restTemplate.postForEntity("/todos", formTodo, Todo.class);
-
         assertEquals(HttpStatus.OK, postTodoResponse.getStatusCode());
-        assertEquals(TEXT, postTodoResponse.getBody().getText());
+        assertEquals(TODO_TEXT, postTodoResponse.getBody().getText());
 
+        // findAllTodos Success
         ResponseEntity<Todo[]> getTodosResponse = restTemplate.getForEntity("/todos", Todo[].class);
-
         assertEquals(HttpStatus.OK, getTodosResponse.getStatusCode());
         assertEquals(1, getTodosResponse.getBody().length);
 
-        Long todo_id = postTodoResponse.getBody().getId();
-        restTemplate.delete("/todos/{id}", todo_id);
-
+        // deleteTodoById Success
+        Long todo1Id = postTodoResponse.getBody().getId();
+        restTemplate.delete("/todos/{todoId}", todo1Id);
         ResponseEntity<Todo[]> getTodosAfterDeleteResponse = restTemplate.getForEntity("/todos", Todo[].class);
         assertEquals(0, getTodosAfterDeleteResponse.getBody().length);
     }

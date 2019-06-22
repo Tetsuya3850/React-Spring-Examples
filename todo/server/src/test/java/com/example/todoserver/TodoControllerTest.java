@@ -9,7 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.util.NestedServletException;
-import java.util.Arrays;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -30,7 +33,7 @@ public class TodoControllerTest {
     private TodoService todoService;
 
     @Test
-    public void saveTodo_WithInvalidText_ReturnsBadRequest() throws Exception {
+    public void saveTodo_WithInvalidTodo_ReturnsBadRequest() throws Exception {
         mockMvc.perform(post("/todos")
                 .content(TestUtils.asJsonString(new FormTodo()))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -38,47 +41,46 @@ public class TodoControllerTest {
     }
 
     @Test
-    public void saveTodo_CallsServiceSaveTodoOnce_WithPassedArgs_ReturnsOKAndTodo() throws Exception {
-        Todo newTodo = new Todo(TEXT);
+    public void saveTodo_Success() throws Exception {
+        Todo newTodo = new Todo(TODO_TEXT);
         when(todoService.saveTodo(any(Todo.class))).thenReturn(newTodo);
 
         mockMvc.perform(post("/todos")
-                .content(TestUtils.asJsonString(new FormTodo(TEXT)))
+                .content(TestUtils.asJsonString(new FormTodo(TODO_TEXT)))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.text").value(TEXT));
+                .andExpect(jsonPath("$.text").value(TODO_TEXT));
 
         verify(todoService, times(1)).saveTodo(any(Todo.class));
     }
 
     @Test
-    public void findAllTodos_CallsServiceFindAllTodosOnce_ReturnsOKAndTodos() throws Exception {
-        when(todoService.findAllTodos()).thenReturn(Arrays.asList(new Todo(TEXT)));
+    public void findAllTodos_Success() throws Exception {
+        List<Todo> todoList = new ArrayList<>();
+        when(todoService.findAllTodos()).thenReturn(todoList);
 
         mockMvc.perform(get("/todos"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].text").value(TEXT));
+                .andExpect(jsonPath("$.length()").value(0));
 
         verify(todoService, times(1)).findAllTodos();
     }
 
     @Test(expected = NestedServletException.class)
     public void deleteTodoById_WithInvalidId_ThrowsException() throws Exception {
-        Long id = 1L;
-        doThrow(new IllegalArgumentException()).when(todoService).deleteTodoById(id);
+        doThrow(new IllegalArgumentException()).when(todoService).deleteTodoById(TODO_ID);
 
-        mockMvc.perform(delete("/todos/{id}", id));
+        mockMvc.perform(delete("/todos/{todoId}", TODO_ID));
     }
 
     @Test
-    public void deleteTodoById_CallsServiceDeleteTodoByIdOnce_WithPassedArgs_ReturnsOK() throws Exception {
-        Long id = 1L;
-        doNothing().when(todoService).deleteTodoById(id);
+    public void deleteTodoById_Success() throws Exception {
+        doNothing().when(todoService).deleteTodoById(TODO_ID);
 
-        mockMvc.perform(delete("/todos/{id}", id))
+        mockMvc.perform(delete("/todos/{todoId}", TODO_ID))
                 .andExpect(status().isOk());
 
-        verify(todoService, times(1)).deleteTodoById(id);
+        verify(todoService, times(1)).deleteTodoById(TODO_ID);
     }
 
 }
