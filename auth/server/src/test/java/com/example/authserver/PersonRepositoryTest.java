@@ -37,7 +37,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    public void findByUsername_ReturnsUser() {
+    public void findByUsername_Success() {
         testEntityManager.persistAndFlush(new Person(USERNAME, PASSWORD));
         Person person = personRepository
                 .findByUsername(USERNAME)

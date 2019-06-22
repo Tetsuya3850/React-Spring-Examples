@@ -22,14 +22,14 @@ public class IntegrationTest {
 
     @Test
     public void test(){
-        // Signup success
+        // Signup
         FormPerson formPerson = new FormPerson(USERNAME, PASSWORD);
         ResponseEntity<Person> signupResponse = restTemplate.postForEntity("/persons/signup", formPerson, Person.class);
         assertEquals(HttpStatus.OK, signupResponse.getStatusCode());
         assertEquals(USERNAME, signupResponse.getBody().getUsername());
         assertNull(signupResponse.getBody().getPassword());
 
-        // Login success
+        // Login
         ResponseEntity<String> loginResponse = restTemplate.postForEntity("/login", formPerson, String.class);
         assertEquals(HttpStatus.OK, loginResponse.getStatusCode());
         String token = loginResponse.getBody();
@@ -48,7 +48,7 @@ public class IntegrationTest {
         headers.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         HttpEntity<String> baseEntity = new HttpEntity<>(headers);
 
-        // getPersonById success
+        // getPersonById
         ResponseEntity<Person> getPersonByIdWithJWTResponse = restTemplate.exchange(
                 "/persons/{personId}", HttpMethod.GET, baseEntity, Person.class, personId);
         assertEquals(HttpStatus.OK, getPersonByIdWithJWTResponse.getStatusCode());
