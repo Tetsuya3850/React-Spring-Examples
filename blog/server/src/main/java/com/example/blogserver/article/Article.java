@@ -1,32 +1,42 @@
 package com.example.blogserver.article;
 
-import com.example.blogserver.user.ApplicationUser;
+import com.example.blogserver.person.Person;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.sql.Timestamp;
 
 @Entity
 public class Article {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
-    @Size(min=1, max=100)
+    @NotBlank
+    @Size(max=100)
     private String title;
 
-    @NotNull
-    @Size(min=1, max=100000)
+    @NotBlank
+    @Size(max=10000)
     private String text;
 
-    private String created = new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(Calendar.getInstance().getTime());
+    @CreationTimestamp
+    private Timestamp created;
 
     @ManyToOne
-    @JoinColumn(name="application_user_id")
-    private ApplicationUser applicationUser;
+    @JoinColumn(name="person_id")
+    private Person person;
+
+    public Article() {
+    }
+
+    public Article(String title, String text) {
+        this.title = title;
+        this.text = text;
+    }
 
     public Long getId() {
         return id;
@@ -48,20 +58,28 @@ public class Article {
         this.text = text;
     }
 
-    public String getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
+    public Person getPerson() {
+        return person;
     }
 
-    public ApplicationUser getApplicationUser() {
-        return applicationUser;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
-    public void setApplicationUser(ApplicationUser applicationUser) {
-        this.applicationUser = applicationUser;
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", created=" + created +
+                ", person=" + person +
+                '}';
     }
+
 
 }

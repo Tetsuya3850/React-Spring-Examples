@@ -8,13 +8,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 public class BlogServerApplication {
 
+	public static void main(String[] args) {
+		SpringApplication.run(BlogServerApplication.class, args);
+	}
+
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(BlogServerApplication.class, args);
 	}
 
 }

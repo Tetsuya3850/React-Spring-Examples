@@ -1,6 +1,7 @@
-package com.example.blogserver;
+package com.example.blogserver.article;
 
 public class FormArticle {
+
     private String title;
     private String text;
 
