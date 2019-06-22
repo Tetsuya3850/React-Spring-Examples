@@ -1,8 +1,6 @@
 package com.example.twitterserver.follow;
 
-import com.example.twitterserver.user.ApplicationUser;
-import com.example.twitterserver.user.ApplicationUserNotFoundException;
-import com.example.twitterserver.user.ApplicationUserRepository;
+import com.example.twitterserver.person.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -12,40 +10,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/follows")
 public class FollowController {
-    @Autowired
-    private FollowRepository followRepository;
+
+    private final FollowService followService;
 
     @Autowired
-    private ApplicationUserRepository applicationUserRepository;
+    public FollowController( FollowService followService){
+        this.followService = followService;
+    }
 
     @PostMapping("/{followeeId}")
-    void toggleFollow(@PathVariable Long followeeId, Authentication authentication) {
-        ApplicationUser follower = applicationUserRepository.findByUsername(authentication.getName());
-        ApplicationUser followee = applicationUserRepository.findById(followeeId).orElseThrow(() -> new ApplicationUserNotFoundException(followeeId));
-        Follow follow = followRepository.findByFollowerAndFollowee(follower, followee);
-        if(follow == null){
-            Follow newFollow = new Follow(follower, followee);
-            follower.incrementFollowingCount();
-            followee.incrementFollowersCount();
-            followRepository.save(newFollow);
-        } else {
-            follower.decrementFollowingCount();
-            followee.decrementFollowersCount();
-            followRepository.delete(follow);
-        }
-        applicationUserRepository.save(follower);
-        applicationUserRepository.save(followee);
+    void toggleFollow(@PathVariable Long followeeId, Authentication auth) {
+        followService.toggleFollow(followeeId, auth);
     }
 
-    @GetMapping("/following/{followerId}")
-    List<ApplicationUser> getFollowing(@PathVariable Long followerId){
-        ApplicationUser follower = applicationUserRepository.findById(followerId).orElseThrow(() -> new ApplicationUserNotFoundException(followerId));
-        return followRepository.getByFollower(follower);
+    @GetMapping("/following/{personId}")
+    List<Person> getAllFollowingByPersonId(@PathVariable Long personId){
+        return followService.getAllFollowingByPersonId(personId);
     }
 
-    @GetMapping("/followers/{followeeId}")
-    List<ApplicationUser> getFollowers(@PathVariable Long followeeId){
-        ApplicationUser followee = applicationUserRepository.findById(followeeId).orElseThrow(() -> new ApplicationUserNotFoundException(followeeId));
-        return followRepository.getByFollowee(followee);
+    @GetMapping("/followers/{personId}")
+    List<Person> getAllFollowersByPersonId(@PathVariable Long personId){
+        return followService.getAllFollowersByPersonId(personId);
     }
 }

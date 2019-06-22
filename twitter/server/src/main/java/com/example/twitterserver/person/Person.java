@@ -1,35 +1,51 @@
-package com.example.twitterserver.user;
+package com.example.twitterserver.person;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-public class ApplicationUser {
+public class Person {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
-    @Column(unique=true)
-    @Size(min=1)
+    @NotBlank
+    @Email
+    @Column(unique = true)
     private String username;
 
     @NotNull
-    @Size(min=8)
+    @Size(min = 8)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    private int followingCount = 0;
+    @ColumnDefault("0")
+    private int followingCount;
 
-    // ahh
+    @ColumnDefault("0")
+    private int followersCount;
 
-    private int followersCount = 0;
+    public Person() {
+    }
+
+    public Person(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -70,5 +86,15 @@ public class ApplicationUser {
 
     public void decrementFollowersCount() {
         this.followersCount -= 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", followingCount=" + followingCount +
+                ", followersCount=" + followersCount +
+                '}';
     }
 }

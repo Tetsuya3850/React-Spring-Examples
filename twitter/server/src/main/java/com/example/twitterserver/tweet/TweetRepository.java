@@ -1,16 +1,23 @@
 package com.example.twitterserver.tweet;
 
-import com.example.twitterserver.user.ApplicationUser;
+import com.example.twitterserver.person.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TweetRepository extends JpaRepository<Tweet, Long> {
 
-    List<Tweet> findByApplicationUser(ApplicationUser applicationUser);
+    @Query(value = "SELECT tweet.*, person.* FROM tweet " +
+            "INNER JOIN person ON tweet.person_id = person.id " +
+            "LEFT OUTER JOIN follow ON follow.followee_id = person.id " +
+            "WHERE follow.follower_id = :personId OR tweet.person_id = :personId " +
+            "ORDER BY tweet.created DESC", nativeQuery = true)
+    List<Tweet> getFeed(@Param("personId") Long personId);
 
-    List<Tweet> findByApplicationUserOrderByCreatedDesc(ApplicationUser applicationUser);
+    List<Tweet> findByPersonOrderByCreatedDesc(Person person);
 
-    Optional<Tweet> findByIdAndApplicationUser(Long tweetId, ApplicationUser applicationUser);
+    long deleteByIdAndPerson(Long id, Person person);
+
 }

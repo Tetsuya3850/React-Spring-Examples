@@ -1,27 +1,29 @@
 package com.example.twitterserver.follow;
 
-import com.example.twitterserver.user.ApplicationUser;
+import com.example.twitterserver.person.Person;
 
 import javax.persistence.*;
 
+@Table(uniqueConstraints= @UniqueConstraint(columnNames={"follower_id", "followee_id"}))
 @Entity
 public class Follow {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name="follower_id")
-    private ApplicationUser follower;
+    private Person follower;
 
     @ManyToOne
     @JoinColumn(name="followee_id")
-    private ApplicationUser followee;
+    private Person followee;
 
     public Follow() {
     }
 
-    public Follow(ApplicationUser follower, ApplicationUser followee) {
+    public Follow(Person follower, Person followee) {
         this.follower = follower;
         this.followee = followee;
     }
@@ -30,19 +32,29 @@ public class Follow {
         return id;
     }
 
-    public ApplicationUser getFollower() {
+    public Person getFollower() {
         return follower;
     }
 
-    public void setFollower(ApplicationUser follower) {
+    public void setFollower(Person follower) {
         this.follower = follower;
     }
 
-    public ApplicationUser getFollowee() {
+    public Person getFollowee() {
         return followee;
     }
 
-    public void setFollowee(ApplicationUser followee) {
+    public void setFollowee(Person followee) {
         this.followee = followee;
     }
+
+    @Override
+    public String toString() {
+        return "Follow{" +
+                "id=" + id +
+                ", follower=" + follower +
+                ", followee=" + followee +
+                '}';
+    }
+
 }

@@ -1,74 +1,45 @@
 package com.example.twitterserver.tweet;
 
-import com.example.twitterserver.follow.Follow;
-import com.example.twitterserver.follow.FollowRepository;
-import com.example.twitterserver.heart.HeartRepository;
-import com.example.twitterserver.user.ApplicationUser;
-import com.example.twitterserver.user.ApplicationUserNotFoundException;
-import com.example.twitterserver.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @RestController
 @RequestMapping("/tweets")
 public class TweetController {
 
-    @Autowired
-    private ApplicationUserRepository applicationUserRepository;
+    private final TweetService tweetService;
 
     @Autowired
-    private TweetRepository tweetRepository;
-
-    @Autowired
-    private FollowRepository followRepository;
-
-    @Autowired
-    private HeartRepository heartRepository;
+    public TweetController(TweetService tweetService) {
+        this.tweetService = tweetService;
+    }
 
     @PostMapping("")
-    Tweet postTweet(@Valid @RequestBody Tweet newTweet, Authentication authentication) {
-        ApplicationUser applicationUser = applicationUserRepository.findByUsername(authentication.getName());
-        newTweet.setApplicationUser(applicationUser);
-        return tweetRepository.save(newTweet);
+    Tweet saveTweet(@Valid @RequestBody Tweet newTweet, Authentication auth) {
+        return tweetService.saveTweet(newTweet, auth);
     }
 
     @GetMapping("")
     List<Tweet> getFeed(Authentication auth) {
-        ApplicationUser applicationUser = applicationUserRepository.findByUsername(auth.getName());
-        List<ApplicationUser> following = followRepository.getByFollower(applicationUser);
-        List<Tweet> feed = new ArrayList<>();
-        for(ApplicationUser appUser : following){
-            feed.addAll(tweetRepository.findByApplicationUser(appUser));
-        }
-        feed.addAll(tweetRepository.findByApplicationUser(applicationUser));
-        feed.sort(Comparator.comparing(Tweet::getCreated).reversed());
-        return feed;
+        return tweetService.getFeed(auth);
     }
 
-    @GetMapping("/users/{userId}")
-    List<Tweet> getAllUserArticles(@PathVariable Long userId) {
-        ApplicationUser applicationUser = applicationUserRepository.findById(userId)
-                .orElseThrow(() -> new ApplicationUserNotFoundException(userId));
-        return tweetRepository.findByApplicationUserOrderByCreatedDesc(applicationUser);
+    @GetMapping("/persons/{personId}")
+    List<Tweet> findAllPersonTweets(@PathVariable Long personId) {
+        return tweetService.findAllPersonTweets(personId);
     }
 
     @GetMapping("/{tweetId}")
-    Tweet getTweet(@PathVariable Long tweetId) {
-        return tweetRepository.findById(tweetId)
-                .orElseThrow(() -> new TweetNotFoundException(tweetId));
+    Tweet findTweetById(@PathVariable Long tweetId) {
+        return tweetService.findTweetById(tweetId);
     }
 
     @DeleteMapping("/{tweetId}")
-    void deleteArticle(@PathVariable Long tweetId, Authentication auth) {
-        ApplicationUser applicationUser = applicationUserRepository.findByUsername(auth.getName());
-        Tweet tweet = tweetRepository.findByIdAndApplicationUser(tweetId, applicationUser).orElseThrow(() -> new TweetNotFoundException(tweetId));
-        tweetRepository.delete(tweet);
+    void deleteTweet(@PathVariable Long tweetId, Authentication auth) {
+        tweetService.deleteTweet(tweetId, auth);
     }
-
 }

@@ -1,4 +1,4 @@
-package com.example.twitterserver.user;
+package com.example.twitterserver.person;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
-        super(authManager);
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+        super(authenticationManager);
     }
 
     @Override
@@ -37,16 +37,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(req, res);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(SecurityConstants.HEADER_STRING);
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest req) {
+        String token = req.getHeader(SecurityConstants.HEADER_STRING);
         if (token != null) {
-            String user = JWT.require(Algorithm.HMAC512(SecurityConstants.JWT_SECRET.getBytes()))
+            String username = JWT.require(Algorithm.HMAC512(SecurityConstants.JWT_SECRET.getBytes()))
                     .build()
                     .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
                     .getSubject();
 
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+            if (username != null) {
+                return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
             }
             return null;
         }

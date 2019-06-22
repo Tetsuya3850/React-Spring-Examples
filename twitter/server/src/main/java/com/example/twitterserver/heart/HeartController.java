@@ -1,11 +1,7 @@
 package com.example.twitterserver.heart;
 
+import com.example.twitterserver.person.Person;
 import com.example.twitterserver.tweet.Tweet;
-import com.example.twitterserver.tweet.TweetNotFoundException;
-import com.example.twitterserver.tweet.TweetRepository;
-import com.example.twitterserver.user.ApplicationUser;
-import com.example.twitterserver.user.ApplicationUserNotFoundException;
-import com.example.twitterserver.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -15,39 +11,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/hearts")
 public class HeartController {
-    @Autowired
-    private HeartRepository heartRepository;
+
+    private final HeartService heartService;
 
     @Autowired
-    private ApplicationUserRepository applicationUserRepository;
-
-    @Autowired
-    private TweetRepository tweetRepository;
-
-    @PostMapping("/{tweetId}")
-    void toggleHeart(@PathVariable Long tweetId, Authentication authentication) {
-        ApplicationUser applicationUser = applicationUserRepository.findByUsername(authentication.getName());
-        Tweet tweet = tweetRepository.findById(tweetId).orElseThrow(() -> new TweetNotFoundException(tweetId));
-        Heart heart = heartRepository.findByApplicationUserAndTweet(applicationUser, tweet);
-        if(heart == null){
-            Heart newLike = new Heart(applicationUser, tweet);
-            heartRepository.save(newLike);
-            tweet.incrementHeartCount();
-        } else {
-            heartRepository.delete(heart);
-            tweet.decrementHeartCount();
-        }
-        tweetRepository.save(tweet);
+    public HeartController(HeartService heartService){
+        this.heartService = heartService;
     }
 
-    @GetMapping("/users/{userId}")
-    List<Tweet> getHeartedTweets(@PathVariable Long userId){
-        ApplicationUser applicationUser = applicationUserRepository.findById(userId).orElseThrow(() -> new ApplicationUserNotFoundException(userId));
-        return heartRepository.getByApplicationUser(applicationUser);
+    @PostMapping("/{tweetId}")
+    void toggleHeart(@PathVariable Long tweetId, Authentication auth) {
+        heartService.toggleHeart(tweetId, auth);
+    }
+
+    @GetMapping("/persons/{personId}")
+    List<Tweet> getAllHeartedTweetsByPersonId(@PathVariable Long personId){
+        return heartService.getAllHeartedTweetsByPersonId(personId);
     }
 
     @GetMapping("/tweets/{tweetId}")
-    List<ApplicationUser> getHeartedUsers(@PathVariable Long tweetId){
-        return heartRepository.getByTweetId(tweetId);
+    List<Person> getAllHeartedPersonsByTweetId(@PathVariable Long tweetId){
+        return heartService.getAllHeartedPersonsByTweetId(tweetId);
     }
 }

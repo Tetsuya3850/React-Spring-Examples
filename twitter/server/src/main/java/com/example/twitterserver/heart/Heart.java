@@ -1,19 +1,21 @@
 package com.example.twitterserver.heart;
 
+import com.example.twitterserver.person.Person;
 import com.example.twitterserver.tweet.Tweet;
-import com.example.twitterserver.user.ApplicationUser;
 
 import javax.persistence.*;
 
+@Table(uniqueConstraints= @UniqueConstraint(columnNames={"person_id", "tweet_id"}))
 @Entity
 public class Heart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="application_user_id")
-    private ApplicationUser applicationUser;
+    @JoinColumn(name="person_id")
+    private Person person;
 
     @ManyToOne
     @JoinColumn(name="tweet_id")
@@ -22,8 +24,8 @@ public class Heart {
     public Heart() {
     }
 
-    public Heart(ApplicationUser applicationUser, Tweet tweet) {
-        this.applicationUser = applicationUser;
+    public Heart(Person person, Tweet tweet) {
+        this.person = person;
         this.tweet = tweet;
     }
 
@@ -31,12 +33,12 @@ public class Heart {
         return id;
     }
 
-    public ApplicationUser getApplicationUser() {
-        return applicationUser;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setApplicationUser(ApplicationUser applicationUser) {
-        this.applicationUser = applicationUser;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public Tweet getTweet() {
@@ -46,5 +48,15 @@ public class Heart {
     public void setTweet(Tweet tweet) {
         this.tweet = tweet;
     }
+
+    @Override
+    public String toString() {
+        return "Heart{" +
+                "id=" + id +
+                ", person=" + person +
+                ", tweet=" + tweet +
+                '}';
+    }
+
 }
 

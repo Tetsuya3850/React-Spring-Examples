@@ -1,37 +1,44 @@
 package com.example.twitterserver.tweet;
 
-import com.example.twitterserver.user.ApplicationUser;
+import com.example.twitterserver.person.Person;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.sql.Timestamp;
 
 @Entity
 public class Tweet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
-    @Size(min=1, max=140)
+    @NotBlank
+    @Size(max=140)
     private String text;
 
-    private String created = new SimpleDateFormat("yyyyMMdd_HHmmss.SSS").format(Calendar.getInstance().getTime());
+    @CreationTimestamp
+    private Timestamp created;
 
     @ManyToOne
-    @JoinColumn(name="application_user_id")
-    private ApplicationUser applicationUser;
+    @JoinColumn(name="person_id")
+    private Person person;
 
-    private int heartCount = 0;
+    @ColumnDefault("0")
+    private int heartCount;
+
+    public Tweet() {
+    }
+
+    public Tweet(String text) {
+        this.text = text;
+    }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getText() {
@@ -42,16 +49,16 @@ public class Tweet {
         this.text = text;
     }
 
-    public String getCreated() {
+    public Timestamp getCreated() {
         return created;
     }
 
-    public ApplicationUser getApplicationUser() {
-        return applicationUser;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setApplicationUser(ApplicationUser applicationUser) {
-        this.applicationUser = applicationUser;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public int getHeartCount() {
@@ -64,6 +71,17 @@ public class Tweet {
 
     public void decrementHeartCount() {
         this.heartCount -= 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Tweet{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", created=" + created +
+                ", person=" + person +
+                ", heartCount=" + heartCount +
+                '}';
     }
 
 }

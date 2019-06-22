@@ -1,4 +1,4 @@
-package com.example.twitterserver;
+package com.example.twitterserver.tweet;
 
 public class FormTweet {
     private String text;

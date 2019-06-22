@@ -1,13 +1,14 @@
-package com.example.twitterserver;
+package com.example.twitterserver.person;
 
-public class FormUser {
+public class FormPerson {
+
     private String username;
     private String password;
 
-    public FormUser() {
+    public FormPerson() {
     }
 
-    public FormUser(String username, String password) {
+    public FormPerson(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -28,3 +29,4 @@ public class FormUser {
         this.password = password;
     }
 }
+
