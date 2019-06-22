@@ -96,7 +96,10 @@ const initialState = {
 const ownInfo = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_OWNINFO:
-      return action.ownInfo;
+      return {
+        followingUserIds: action.ownInfo.followingPersonIds,
+        heartedTweetIds: action.ownInfo.heartedTweetIds
+      };
     case HEART:
       return {
         ...state,

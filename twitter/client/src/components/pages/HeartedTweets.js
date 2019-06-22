@@ -15,7 +15,7 @@ class HeartedTweets extends React.Component {
 
   async componentDidMount() {
     const { match, addTweets, addUsers } = this.props;
-    const { data } = await api.getHeartedTweets(match.params.userId);
+    const { data } = await api.getAllHeartedTweets(match.params.userId);
     const normalizedData = normalize(data, [tweet]);
     this.setState({ heartedTweetsByIds: normalizedData.result });
     addTweets(normalizedData.entities.tweets);

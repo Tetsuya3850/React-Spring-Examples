@@ -38,7 +38,7 @@ export const handleGetTweet = tweetId => async dispatch => {
   dispatch(fetchDetailRequest());
   try {
     const getTweetPromise = api.getTweet(tweetId);
-    const getHeartedUserPromise = api.getHeartedUsers(tweetId);
+    const getHeartedUserPromise = api.getAllHeartedUsers(tweetId);
     const [tweetResponse, usersResponse] = await Promise.all([
       getTweetPromise,
       getHeartedUserPromise

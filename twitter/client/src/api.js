@@ -8,31 +8,34 @@ const setAuthHeader = () => ({
   headers: { authorization: `Bearer ${getToken()}` }
 });
 
-export const signup = payload => axios.post(`/users/signup`, payload);
-export const signin = payload => axios.post(`/login`, payload);
-export const getUser = userId => axios.get(`/users/${userId}`, setAuthHeader());
-export const getUserList = () => axios.get(`/users`, setAuthHeader());
-export const getOwnInfo = () => axios.get(`/users/me`, setAuthHeader());
+export const wakeup = () => axios.get("");
 
-export const toggleFollow = userId =>
-  axios.post(`/follows/${userId}`, null, setAuthHeader());
-export const getFollowing = userId =>
-  axios.get(`/follows/following/${userId}`, setAuthHeader());
-export const getFollowers = userId =>
-  axios.get(`/follows/followers/${userId}`, setAuthHeader());
+export const signup = payload => axios.post(`/persons/signup`, payload);
+export const signin = payload => axios.post(`/login`, payload);
+export const getUser = personId =>
+  axios.get(`/persons/${personId}`, setAuthHeader());
+export const getUserList = () => axios.get(`/persons`, setAuthHeader());
+export const getOwnInfo = () => axios.get(`/persons/me`, setAuthHeader());
+
+export const toggleFollow = personId =>
+  axios.post(`/follows/${personId}`, null, setAuthHeader());
+export const getFollowing = personId =>
+  axios.get(`/follows/following/${personId}`, setAuthHeader());
+export const getFollowers = personId =>
+  axios.get(`/follows/followers/${personId}`, setAuthHeader());
 
 export const toggleHeart = tweetId =>
   axios.post(`/hearts/${tweetId}`, null, setAuthHeader());
-export const getHeartedTweets = userId =>
-  axios.get(`/hearts/users/${userId}`, setAuthHeader());
-export const getHeartedUsers = tweetId =>
+export const getAllHeartedTweets = personId =>
+  axios.get(`/hearts/persons/${personId}`, setAuthHeader());
+export const getAllHeartedUsers = tweetId =>
   axios.get(`/hearts/tweets/${tweetId}`, setAuthHeader());
 
-export const addTweet = payload =>
+export const postTweet = payload =>
   axios.post(`/tweets`, payload, setAuthHeader());
 export const getFeed = () => axios.get(`/tweets`, setAuthHeader());
-export const getUserFeed = userId =>
-  axios.get(`/tweets/users/${userId}`, setAuthHeader());
+export const getUserFeed = personId =>
+  axios.get(`/tweets/persons/${personId}`, setAuthHeader());
 export const getTweet = tweetId =>
   axios.get(`/tweets/${tweetId}`, setAuthHeader());
 export const deleteTweet = tweetId =>

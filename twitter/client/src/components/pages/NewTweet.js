@@ -21,7 +21,7 @@ class NewTweet extends React.Component {
     if (text) {
       const payload = { text };
       try {
-        await api.addTweet(payload);
+        await api.postTweet(payload);
         this.props.history.push("/");
       } catch (error) {
         console.log(error);

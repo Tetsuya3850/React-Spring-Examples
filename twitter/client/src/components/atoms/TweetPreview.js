@@ -9,7 +9,7 @@ import { isAuthed } from "../../tokenUtils";
 const TweetPreview = ({ tweet, user, isOwner, match }) => (
   <div style={styles.container}>
     <Link to={`/users/details/${user.id}`}>{user.username}</Link>
-    <div>{moment(tweet.created, "yyyymmddhhmmss.sss").toISOString()}</div>
+    <div>{moment(tweet.created).format("LLL")}</div>
     <div>{tweet.text}</div>
     <div>
       <HeartTweetBtn tweetId={tweet.id} />
@@ -37,7 +37,7 @@ const styles = {
 
 const mapStateToProps = ({ tweets, users }, { tweetId }) => {
   const tweet = tweets[tweetId] ? tweets[tweetId] : {};
-  const user = users[tweet.applicationUser] ? users[tweet.applicationUser] : {};
+  const user = users[tweet.person] ? users[tweet.person] : {};
   const isOwner = isAuthed() === user.id;
   return {
     tweet,

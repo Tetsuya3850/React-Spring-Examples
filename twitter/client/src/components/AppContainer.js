@@ -19,12 +19,17 @@ import NewTweet from "./pages/NewTweet";
 import TweetDetail from "./pages/TweetDetail";
 import { isAuthed } from "../tokenUtils";
 import { handleFetchOwnInfo } from "../reducers/ownInfoReducer";
+import * as api from "../api";
 
 class AppContainer extends React.Component {
-  componentDidMount() {
+  async componentDidMount() {
     if (isAuthed()) {
       this.props.handleFetchOwnInfo();
     }
+    // Solely for waking up Heroku server, please ignore.
+    try {
+      await api.wakeup();
+    } catch (e) {}
   }
 
   render() {

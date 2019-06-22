@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TweetRepository extends JpaRepository<Tweet, Long> {
 
-    @Query(value = "SELECT tweet.*, person.* FROM tweet " +
+    @Query(value = "SELECT DISTINCT tweet.*, person.* FROM tweet " +
             "INNER JOIN person ON tweet.person_id = person.id " +
             "LEFT OUTER JOIN follow ON follow.followee_id = person.id " +
             "WHERE follow.follower_id = :personId OR tweet.person_id = :personId " +
