@@ -25,24 +25,26 @@ public class PersonServiceTest {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    class IsPersonWithBCryptEncodedPassword implements ArgumentMatcher<Person> {
-        private Pattern BCRYPT_PATTERN = Pattern
-                .compile("\\A\\$2(a|y|b)?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
-
-        public boolean matches(Person person) {
-            return BCRYPT_PATTERN.matcher(person.getPassword()).matches();
-        }
-    }
+    private Person mockPerson;
 
     @Before
     public void setup(){
         bCryptPasswordEncoder = new BCryptPasswordEncoder();
         personService = new PersonService(personRepository, bCryptPasswordEncoder);
+        mockPerson = new Person(USERNAME, PASSWORD);
     }
 
     @Test
-    public void savePerson_EncodesPassword_CallsRepositorySaveOnce_WithPassedArgs_ReturnsPerson(){
-        Person mockPerson = new Person(USERNAME, PASSWORD);
+    public void savePerson_Success(){
+        class IsPersonWithBCryptEncodedPassword implements ArgumentMatcher<Person> {
+            private Pattern BCRYPT_PATTERN = Pattern
+                    .compile("\\A\\$2(a|y|b)?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
+
+            public boolean matches(Person person) {
+                return BCRYPT_PATTERN.matcher(person.getPassword()).matches();
+            }
+        }
+
         when(personRepository.save(argThat(new IsPersonWithBCryptEncodedPassword()))).thenReturn(mockPerson);
 
         Person person = personService.savePerson(mockPerson);
@@ -59,8 +61,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void findPersonById_CallsRepositoryFindByIdOnce_WithPassedArgs_ReturnsPerson(){
-        Person mockPerson = new Person(USERNAME, PASSWORD);
+    public void findPersonById_Success(){
         when(personRepository.findById(PERSON_ID)).thenReturn(Optional.of(mockPerson));
 
         Person person = personService.findPersonById(PERSON_ID);

@@ -20,7 +20,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private AuthenticationManager authenticationManager;
     private UserDetailsServiceImpl userDetailsService;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager,
+                                   UserDetailsServiceImpl userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
     }

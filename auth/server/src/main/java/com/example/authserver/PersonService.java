@@ -15,12 +15,12 @@ public class PersonService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public Person savePerson(Person person) {
+    Person savePerson(Person person) {
         person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
         return personRepository.save(person);
     }
 
-    public Person findPersonById(Long personId) {
+    Person findPersonById(Long personId) {
         return personRepository.findById(personId)
                 .orElseThrow(() -> new PersonNotFoundException(personId));
     }

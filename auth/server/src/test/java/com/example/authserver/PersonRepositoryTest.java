@@ -22,7 +22,7 @@ public class PersonRepositoryTest {
     private TestEntityManager testEntityManager;
 
     @Test(expected = PersistenceException.class)
-    public void duplicateEmail_ThrowsException() {
+    public void duplicateUsername_ThrowsException() {
         testEntityManager.persistAndFlush(new Person(USERNAME, PASSWORD));
         testEntityManager.persistAndFlush(new Person(USERNAME, PASSWORD));
     }
@@ -30,14 +30,14 @@ public class PersonRepositoryTest {
     @Test(expected = UsernameNotFoundException.class)
     public void findByUsername_WithNonExistentUsername_ThrowsException() {
         testEntityManager.persistAndFlush(new Person(USERNAME, PASSWORD));
-        String nonExistUsername = "NONEXISTUSERNAME";
+        final String NON_EXIST_USERNAME = "no@gmail.com";
         personRepository
-                .findByUsername(nonExistUsername)
-                .orElseThrow(() -> new UsernameNotFoundException(nonExistUsername));
+                .findByUsername(NON_EXIST_USERNAME)
+                .orElseThrow(() -> new UsernameNotFoundException(NON_EXIST_USERNAME));
     }
 
     @Test
-    public void findByUsername_ReturnsUser() throws Exception {
+    public void findByUsername_ReturnsUser() {
         testEntityManager.persistAndFlush(new Person(USERNAME, PASSWORD));
         Person person = personRepository
                 .findByUsername(USERNAME)

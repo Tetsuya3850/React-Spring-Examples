@@ -22,26 +22,35 @@ public class IntegrationTest {
 
     @Test
     public void test(){
+        // Signup success
         FormPerson formPerson = new FormPerson(USERNAME, PASSWORD);
         ResponseEntity<Person> signupResponse = restTemplate.postForEntity("/persons/signup", formPerson, Person.class);
         assertEquals(HttpStatus.OK, signupResponse.getStatusCode());
         assertEquals(USERNAME, signupResponse.getBody().getUsername());
         assertNull(signupResponse.getBody().getPassword());
 
+        // Login success
         ResponseEntity<String> loginResponse = restTemplate.postForEntity("/login", formPerson, String.class);
         assertEquals(HttpStatus.OK, loginResponse.getStatusCode());
         String token = loginResponse.getBody();
         Map jsonPayload = TestUtils.decodeJWTPayload(token);
         assertEquals(jsonPayload.get("sub"), USERNAME);
+        String personId = String.valueOf(jsonPayload.get("id"));
 
-        String id = String.valueOf(jsonPayload.get("id"));
-        ResponseEntity<Person> getPersonByIdWithoutJWTResponse = restTemplate.exchange("/persons/{id}", HttpMethod.GET, null, Person.class, id);
+        // getPerson Fail Without JWT
+        ResponseEntity<Person> getPersonByIdWithoutJWTResponse = restTemplate.exchange(
+                "/persons/{personId}", HttpMethod.GET, null, Person.class, personId);
         assertEquals(HttpStatus.FORBIDDEN, getPersonByIdWithoutJWTResponse.getStatusCode());
 
+        // JWT header setup
         HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<Person> getPersonByIdWithJWTResponse = restTemplate.exchange("/persons/{id}", HttpMethod.GET, entity, Person.class, id);
+        HttpEntity<String> baseEntity = new HttpEntity<>(headers);
+
+        // getPersonById success
+        ResponseEntity<Person> getPersonByIdWithJWTResponse = restTemplate.exchange(
+                "/persons/{personId}", HttpMethod.GET, baseEntity, Person.class, personId);
         assertEquals(HttpStatus.OK, getPersonByIdWithJWTResponse.getStatusCode());
         assertEquals(USERNAME, getPersonByIdWithJWTResponse.getBody().getUsername());
         assertNull(getPersonByIdWithJWTResponse.getBody().getPassword());

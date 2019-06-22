@@ -71,7 +71,7 @@ public class PersonModelTest {
     }
 
     @Test
-    public void invalidWhen_PasswordIsShorterThen8() {
+    public void invalidWhen_PasswordIsShorterThan8() {
         Person person = new Person(USERNAME, TestUtils.dummyStringWithSpecifiedLength(7));
 
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
@@ -81,7 +81,7 @@ public class PersonModelTest {
     }
 
     @Test
-    public void validPerson() {
+    public void valid() {
         Person person = new Person(USERNAME, PASSWORD);
 
         Set<ConstraintViolation<Person>> constraintViolations = validator.validate(person);
