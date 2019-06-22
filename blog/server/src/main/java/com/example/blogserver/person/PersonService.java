@@ -23,7 +23,8 @@ public class PersonService {
     }
 
     Person findPersonById(Long personId) {
-        return personRepository.findById(personId)
+        return personRepository
+                .findById(personId)
                 .orElseThrow(() -> new PersonNotFoundException(personId));
     }
 }

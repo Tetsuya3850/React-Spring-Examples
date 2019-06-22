@@ -33,14 +33,14 @@ public class IntegrationTest {
 
     @Test
     public void test() {
-        // Signup success
+        // Signup
         FormPerson formPerson = new FormPerson(USERNAME, PASSWORD);
         ResponseEntity<Person> signupResponse = restTemplate.postForEntity("/persons/signup", formPerson, Person.class);
         assertEquals(HttpStatus.OK, signupResponse.getStatusCode());
         assertEquals(USERNAME, signupResponse.getBody().getUsername());
         assertNull(signupResponse.getBody().getPassword());
 
-        // Login success
+        // Login
         ResponseEntity<String> loginResponse = restTemplate.postForEntity("/login", formPerson, String.class);
         assertEquals(HttpStatus.OK, loginResponse.getStatusCode());
         String token = loginResponse.getBody();
@@ -59,20 +59,20 @@ public class IntegrationTest {
         headers.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         HttpEntity<String> baseHttpEntity = new HttpEntity<>(headers);
 
-        // getPersonById success
+        // getPersonById
         ResponseEntity<Person> getPersonByIdWithJWTResponse = restTemplate.exchange(
                 "/persons/{personId}", HttpMethod.GET, baseHttpEntity, Person.class, person1Id);
         assertEquals(HttpStatus.OK, getPersonByIdWithJWTResponse.getStatusCode());
         assertEquals(USERNAME, getPersonByIdWithJWTResponse.getBody().getUsername());
         assertNull(getPersonByIdWithJWTResponse.getBody().getPassword());
 
-        // saveArticle Success
+        // saveArticle
         String ARTICLE_TITLE_1 = ARTICLE_TITLE + "_1";
         FormArticle formArticle1 = new FormArticle(ARTICLE_TITLE_1, ARTICLE_TEXT);
         HttpEntity<Object> saveArticleHttpEntity = new HttpEntity<>(formArticle1, headers);
         ResponseEntity<Article> saveArticleResponse = restTemplate.exchange(
                 "/articles", HttpMethod.POST, saveArticleHttpEntity, Article.class);
-        TestUtils.threadSleap(1000);
+        TestUtils.threadSleep(1000);
         assertEquals(HttpStatus.OK, saveArticleResponse.getStatusCode());
         assertEquals(ARTICLE_TITLE_1, saveArticleResponse.getBody().getTitle());
         assertEquals(USERNAME, saveArticleResponse.getBody().getPerson().getUsername());
@@ -82,7 +82,7 @@ public class IntegrationTest {
         // Add Seed Data
         String ARTICLE_TITLE_2 = ARTICLE_TITLE + "_2";
         restTemplate.exchange("/articles", HttpMethod.POST, new HttpEntity<>(new FormArticle(ARTICLE_TITLE_2, ARTICLE_TEXT), headers), Article.class);
-        TestUtils.threadSleap(1000);
+        TestUtils.threadSleep(1000);
         String USERNAME_2 = USERNAME + "_2";
         FormPerson formPerson2 = new FormPerson(USERNAME_2, PASSWORD);
         restTemplate.postForEntity("/persons/signup", formPerson2, Person.class);
@@ -94,26 +94,26 @@ public class IntegrationTest {
         String ARTICLE_TITLE_3 = ARTICLE_TITLE + "_3";
         restTemplate.exchange("/articles", HttpMethod.POST, new HttpEntity<>(
                 new FormArticle(ARTICLE_TITLE_3, ARTICLE_TEXT), headers2), Article.class);
-        TestUtils.threadSleap(1000);
+        TestUtils.threadSleep(1000);
         String ARTICLE_TITLE_4 = ARTICLE_TITLE + "_4";
         restTemplate.exchange("/articles", HttpMethod.POST, new HttpEntity<>(
                 new FormArticle(ARTICLE_TITLE_4, ARTICLE_TEXT), headers2), Article.class);
 
-        // Feed first page success
+        // Feed first page
         ResponseEntity<RestPageImpl<Article>> getFeedResponse = restTemplate.exchange(
                 "/articles", HttpMethod.GET, baseHttpEntity, new ParameterizedTypeReference<RestPageImpl<Article>>() {});
         assertEquals(HttpStatus.OK, getFeedResponse.getStatusCode());
         assertEquals(ARTICLE_TITLE_4, getFeedResponse.getBody().getContent().get(0).getTitle());
         assertEquals(USERNAME_2, getFeedResponse.getBody().getContent().get(0).getPerson().getUsername());
 
-        // Feed next page success
+        // Feed next page
         ResponseEntity<RestPageImpl<Article>> getNextPageFeedResponse = restTemplate.exchange(
                 "/articles?page={page}", HttpMethod.GET, baseHttpEntity, new ParameterizedTypeReference<RestPageImpl<Article>>() {}, 1);
         assertEquals(HttpStatus.OK, getNextPageFeedResponse.getStatusCode());
         assertEquals(ARTICLE_TITLE_1, getNextPageFeedResponse.getBody().getContent().get(0).getTitle());
         assertEquals(USERNAME, getNextPageFeedResponse.getBody().getContent().get(0).getPerson().getUsername());
 
-        // User articles success
+        // User articles
         ResponseEntity<List<Article>> getPersonArticlesResponse = restTemplate.exchange(
                 "/articles/persons/{personId}", HttpMethod.GET, baseHttpEntity, new ParameterizedTypeReference<List<Article>>() {}, person1Id);
         assertEquals(HttpStatus.OK, getPersonArticlesResponse.getStatusCode());
@@ -121,7 +121,7 @@ public class IntegrationTest {
         assertEquals(ARTICLE_TITLE_2, getPersonArticlesResponse.getBody().get(0).getTitle());
         assertEquals(USERNAME, getPersonArticlesResponse.getBody().get(0).getPerson().getUsername());
 
-        // Get article success
+        // Get article
         ResponseEntity<Article> getArticleResponse = restTemplate.exchange(
                 "/articles/{articleId}", HttpMethod.GET, baseHttpEntity, Article.class, article1Id);
         assertEquals(HttpStatus.OK, getArticleResponse.getStatusCode());
@@ -129,7 +129,7 @@ public class IntegrationTest {
         assertEquals(USERNAME, getArticleResponse.getBody().getPerson().getUsername());
         assertNull(getArticleResponse.getBody().getPerson().getPassword());
 
-        // Edit article Success
+        // Edit article
         String EDIT_TITLE = "EDIT_TITLE";
         FormArticle editArticle = new FormArticle(EDIT_TITLE, ARTICLE_TEXT);
         HttpEntity<Object> editArticleHttpEntity = new HttpEntity<>(editArticle, headers);
@@ -138,7 +138,7 @@ public class IntegrationTest {
         assertEquals(HttpStatus.OK, editArticleResponse.getStatusCode());
         assertEquals(EDIT_TITLE, editArticleResponse.getBody().getTitle());
 
-        // Delete article success
+        // Delete article
         ResponseEntity<Void> deleteArticleResponse = restTemplate.exchange(
                 "/articles/{articleId}", HttpMethod.DELETE, baseHttpEntity, Void.class, article1Id);
         assertEquals(HttpStatus.OK, deleteArticleResponse.getStatusCode());

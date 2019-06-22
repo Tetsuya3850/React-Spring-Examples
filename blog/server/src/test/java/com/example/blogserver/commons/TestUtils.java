@@ -41,7 +41,7 @@ public class TestUtils {
         return new String(chars);
     }
 
-    public static void threadSleap(int milliseconds){
+    public static void threadSleep(int milliseconds){
         try {
             Thread.sleep(milliseconds);
         } catch(Exception e){

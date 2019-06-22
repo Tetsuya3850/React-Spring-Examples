@@ -25,7 +25,6 @@ import java.util.List;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.example.blogserver.commons.TestConstants.*;
-import static java.util.Collections.emptyList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,8 +54,8 @@ public class ArticleControllerTest {
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .withClaim("id", Long.toString(PERSON_ID))
                 .sign(HMAC512(SecurityConstants.JWT_SECRET.getBytes()));
-        mockArticle =  new Article(ARTICLE_TITLE, ARTICLE_TEXT);
-        when(userDetailsService.loadUserByUsername(USERNAME)).thenReturn(new User(USERNAME, PASSWORD, emptyList()));
+        mockArticle = new Article(ARTICLE_TITLE, ARTICLE_TEXT);
+        when(userDetailsService.loadUserByUsername(USERNAME)).thenReturn(new User(USERNAME, PASSWORD, new ArrayList<>()));
     }
 
     @Test
@@ -182,7 +181,8 @@ public class ArticleControllerTest {
 
     @Test
     public void deleteArticle_Success() throws Exception {
-        doNothing().when(articleService).deleteArticle(eq(ARTICLE_ID), any(UsernamePasswordAuthenticationToken.class));
+        doNothing().when(articleService).deleteArticle(
+                eq(ARTICLE_ID), any(UsernamePasswordAuthenticationToken.class));
 
         mockMvc.perform(delete("/articles/{articleId}", ARTICLE_ID)
                 .header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token))

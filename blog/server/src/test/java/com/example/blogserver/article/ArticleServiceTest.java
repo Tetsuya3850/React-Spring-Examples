@@ -34,8 +34,8 @@ public class ArticleServiceTest {
 
     private ArticleService articleService;
 
-    private Person mockPerson;
     private Article mockArticle;
+    private Person mockPerson;
     private Authentication mockAuth;
 
     @Before
