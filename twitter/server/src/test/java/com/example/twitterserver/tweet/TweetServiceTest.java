@@ -70,7 +70,7 @@ public class TweetServiceTest {
     }
 
     @Test
-    public void findFeed_Success(){
+    public void getFeed_Success(){
         List<Tweet> mockTweetList = new ArrayList<>();
         when(tweetRepository.getFeed(PERSON_ID)).thenReturn(mockTweetList);
         when(personRepository.findByUsername(USERNAME)).thenReturn(Optional.of(mockPerson));
