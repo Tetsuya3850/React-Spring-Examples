@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,9 @@ public class Post {
 
     @Id
     private Long id;
+
+    @NotNull
+    private String imgPath;
 
     private String description;
 
@@ -32,13 +36,22 @@ public class Post {
     public Post() {
     }
 
-    public Post(Long id, String description) {
+    public Post(Long id, String imgPath, String description) {
         this.id = id;
+        this.imgPath = imgPath;
         this.description = description;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     public String getDescription() {

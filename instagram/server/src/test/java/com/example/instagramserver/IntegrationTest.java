@@ -13,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,7 @@ public class IntegrationTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void test() {
+    public void test() throws IOException {
 
         // Signup
         FormPerson formPerson = new FormPerson(PERSON_ID, USERNAME, PASSWORD);
@@ -71,19 +74,33 @@ public class IntegrationTest {
         assertNull(getPersonByIdWithJWTResponse.getBody().getPassword());
 
         // savePost
-        FormPost formPost = new FormPost(POST_ID, POST_DESCRIPTION, Arrays.asList(TAG_TEXT_1, TAG_TEXT_2));
-
+        HttpHeaders fileUploadHeaders = new HttpHeaders();
+        fileUploadHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        fileUploadHeaders.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+        LinkedMultiValueMap<String, Object> fileMap = new LinkedMultiValueMap<>();
+        fileMap.add("file", new FileSystemResource("src/test/java/com/example/instagramserver/commons/spring.png"));
+        HttpEntity<LinkedMultiValueMap<String, Object>> fileUploadHttpEntity = new HttpEntity<>(fileMap, fileUploadHeaders);
+        ResponseEntity<String> fileUploadresponse = restTemplate.exchange(
+                "/images", HttpMethod.POST, fileUploadHttpEntity, String.class);
+        assertEquals(HttpStatus.OK, fileUploadresponse.getStatusCode());
+        String imgPath = fileUploadresponse.getBody();
+        FormPost formPost = new FormPost(POST_ID, imgPath, POST_DESCRIPTION, Arrays.asList(TAG_TEXT_1, TAG_TEXT_2));
         HttpEntity<Object> savePostHttpEntity = new HttpEntity<>(formPost, headers);
         ResponseEntity<Post> savePostResponse = restTemplate.exchange(
                 "/posts", HttpMethod.POST, savePostHttpEntity, Post.class);
         TestUtils.threadSleep(1000);
         assertEquals(HttpStatus.OK, savePostResponse.getStatusCode());
+        assertEquals(imgPath, savePostResponse.getBody().getImgPath());
         assertEquals(POST_DESCRIPTION, savePostResponse.getBody().getDescription());
         assertEquals(TAG_TEXT_1, savePostResponse.getBody().getTags().get(0).getText());
         assertEquals(TAG_TEXT_2, savePostResponse.getBody().getTags().get(1).getText());
         assertEquals(USERNAME, savePostResponse.getBody().getPerson().getUsername());
         assertNull(savePostResponse.getBody().getPerson().getPassword());
         String postId = String.valueOf(savePostResponse.getBody().getId());
+
+        // Get Image
+        ResponseEntity<byte[]> fileDownloadResponse = restTemplate.exchange(imgPath, HttpMethod.GET,null,  byte[].class);
+        assertEquals(HttpStatus.OK, fileDownloadResponse.getStatusCode());
 
         // Add Seed Data
         FormPerson anotherPerson = new FormPerson(ANOTHER_PERSON_ID, ANOTHER_USERNAME, PASSWORD);
@@ -95,7 +112,7 @@ public class IntegrationTest {
         headersAnother.set(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + tokenAnother);
         restTemplate.postForEntity("/persons/signup", anotherPerson, Person.class);
         restTemplate.exchange(
-                "/posts", HttpMethod.POST, new HttpEntity<>(new FormPost(ANOTHER_POST_ID, ANOTHER_POST_DESCRIPTION, Arrays.asList(TAG_TEXT_2, TAG_TEXT_3)), headersAnother), Post.class);
+                "/posts", HttpMethod.POST, new HttpEntity<>(new FormPost(ANOTHER_POST_ID, ANOTHER_POST_IMG_PATH, ANOTHER_POST_DESCRIPTION, Arrays.asList(TAG_TEXT_2, TAG_TEXT_3)), headersAnother), Post.class);
 
         // Find Feed
         ResponseEntity<List<Post>> findFeedResponse = restTemplate.exchange(
@@ -144,6 +161,5 @@ public class IntegrationTest {
         assertEquals(HttpStatus.OK, deletePostResponse.getStatusCode());
 
     }
-
 }
 

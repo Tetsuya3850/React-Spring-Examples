@@ -59,7 +59,7 @@ public class PostControllerTest {
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .withClaim("id", PERSON_ID)
                 .sign(HMAC512(SecurityConstants.JWT_SECRET.getBytes()));
-        mockPost = new Post(POST_ID, POST_DESCRIPTION);
+        mockPost = new Post(POST_ID, POST_IMG_PATH , POST_DESCRIPTION);
         mockTag1 = new Tag(TAG_TEXT_1);
         mockTag2 = new Tag(TAG_TEXT_2);
         mockPost.addTag(mockTag1);
@@ -73,7 +73,7 @@ public class PostControllerTest {
 
         mockMvc.perform(post("/posts")
                 .header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
-                .content(TestUtils.asJsonString(new FormPost(POST_ID, POST_DESCRIPTION, Arrays.asList(TAG_TEXT_1, TAG_TEXT_2))))
+                .content(TestUtils.asJsonString(new FormPost(POST_ID, POST_IMG_PATH, POST_DESCRIPTION, Arrays.asList(TAG_TEXT_1, TAG_TEXT_2))))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.description").value(POST_DESCRIPTION))

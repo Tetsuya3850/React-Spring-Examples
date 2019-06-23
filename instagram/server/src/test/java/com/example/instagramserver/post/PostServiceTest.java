@@ -44,7 +44,7 @@ public class PostServiceTest {
     @Before
     public void setup(){
         postService = new PostService(postRepository, tagRepository, personRepository);
-        mockPost = new Post(POST_ID, POST_DESCRIPTION);
+        mockPost = new Post(POST_ID, POST_IMG_PATH, POST_DESCRIPTION);
         mockTag1 = new Tag(TAG_TEXT_1);
         mockPerson = new Person(PERSON_ID, USERNAME, PASSWORD);
         mockAuth = new UsernamePasswordAuthenticationToken(

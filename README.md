@@ -43,6 +43,7 @@ A collection of basic apps built with React and Spring.
 - [Testing Spring Boot Applications - Phil Webb](https://www.youtube.com/watch?v=QjaoAWLlGGs)
 - [Spring Tips: Bootiful Testing](https://www.youtube.com/watch?v=lTSJCr7xdbM)
 - [Deploying Spring Boot Applications to Heroku](https://devcenter.heroku.com/articles/deploying-spring-boot-apps-to-heroku)
+- [Spring Cloud on AWS](https://www.youtube.com/watch?v=Qq3CTHRLEwc)
 - [Grokking the System Design Interview](https://www.educative.io/collection/5668639101419520/5649050225344512)
 - [High Scalability](http://highscalability.com/)
 

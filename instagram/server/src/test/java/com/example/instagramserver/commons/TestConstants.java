@@ -12,6 +12,8 @@ public class TestConstants {
     public static final String PASSWORD = "Test3850";
     public static final Long POST_ID = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
     public static final Long ANOTHER_POST_ID = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+    public static final String POST_IMG_PATH = "http://blah.com/images/image.png";
+    public static final String ANOTHER_POST_IMG_PATH = "http://blah.com/images/another.png";
     public static final String POST_DESCRIPTION = "Post1";
     public static final String ANOTHER_POST_DESCRIPTION = "Post2";
     public static final String TAG_TEXT_1 = "Tag1";

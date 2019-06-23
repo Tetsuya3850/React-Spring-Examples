@@ -34,11 +34,11 @@ public class PostRepositoryTest {
     public void setup(){
         person = testEntityManager.persistFlushFind(new Person(PERSON_ID, USERNAME, PASSWORD));
         another_person = testEntityManager.persistFlushFind(new Person(ANOTHER_PERSON_ID, ANOTHER_USERNAME, PASSWORD));
-        post = new Post(POST_ID, POST_DESCRIPTION);
+        post = new Post(POST_ID, POST_IMG_PATH , POST_DESCRIPTION);
         post.setPerson(person);
         post = testEntityManager.persistFlushFind(post);
         postId = post.getId();
-        another_post = new Post(ANOTHER_POST_ID, POST_DESCRIPTION);
+        another_post = new Post(ANOTHER_POST_ID, ANOTHER_POST_IMG_PATH , POST_DESCRIPTION);
         another_post.setPerson(person);
         another_post = testEntityManager.persistFlushFind(another_post);
     }
