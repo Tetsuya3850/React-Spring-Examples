@@ -132,6 +132,8 @@ public class IntegrationTest {
                 "/posts/{postId}", HttpMethod.GET, baseHttpEntity, Post.class, postId);
         assertEquals(HttpStatus.OK, getPostResponse.getStatusCode());
         assertEquals(POST_DESCRIPTION, getPostResponse.getBody().getDescription());
+        assertEquals(TAG_TEXT_1, getPostResponse.getBody().getTags().get(0).getText());
+        assertEquals(TAG_TEXT_2, getPostResponse.getBody().getTags().get(1).getText());
 
         // Delete post fails for non-owner person, and succeeds for owner person
         ResponseEntity<Void> deletePostResponse = restTemplate.exchange(
